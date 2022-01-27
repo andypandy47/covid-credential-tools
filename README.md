@@ -1,13 +1,17 @@
-# Covid Credentials Generator
+# Covid Credentials Tool
 
-Allows users to generate Covid Credentials according known standards
+Allows users to generate, read and verify Covid Credentials according to multiple standards
 
 **Features**
 
-- [x] EU DCC schema ver 1.3.0
-- [ ] Smart Health Cards
-- [ ] ICAO VDS-NC
-- [ ] Divoc
+- [x] EU DCC schema ver 1.3.0 Gen
+- [ ] EU DCC Read
+- [ ] Smart Health Cards Gen
+- [ ] Smart Health Cards Read
+- [ ] ICAO VDS-NC Gen
+- [ ] ICAO VDS-NC Read
+- [ ] Divoc Gen
+- [ ] Divoc Read
 
 ## Usage
 

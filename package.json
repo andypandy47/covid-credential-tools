@@ -1,0 +1,51 @@
+{
+  "name": "covid-credentials-generator",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next eslint .",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^1.1.1",
+    "@chakra-ui/react": "^1.7.4",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@pathcheck/dcc-sdk": "0.0.27",
+    "base45-web": "^1.0.2",
+    "bignumber.js": "^9.0.2",
+    "browserify-zlib": "^0.2.0",
+    "cbor": "^8.1.0",
+    "cose-js": "^0.8.3",
+    "dayjs": "^1.10.7",
+    "ec-key": "0.0.4",
+    "framer-motion": "^5.6.0",
+    "icao-transliteration": "^1.0.4",
+    "js-base64": "^3.7.2",
+    "js-x509-utils": "^1.0.3",
+    "jwk-to-pem": "^2.0.5",
+    "next": "12.0.7",
+    "qrcode": "^1.5.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "sha256": "^0.2.0"
+  },
+  "devDependencies": {
+    "@types/base45": "^2.0.0",
+    "@types/node": "^16.11.12",
+    "@types/qrcode": "^1.4.2",
+    "@types/qrcode.react": "^1.0.2",
+    "@types/react": "17.0.38",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "eslint": "8.6.0",
+    "eslint-config-next": "12.0.7",
+    "eslint-config-prettier": "^8.3.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.7",
+    "prettier": "^2.5.1",
+    "typescript": "4.5.4"
+  }
+}

@@ -19,7 +19,7 @@ const Home: NextPage = () => {
   return (
     <Flex width="100%" height="100%" direction={'column'}>
       <Head>
-        <title>Covid Credentials Generator</title>
+        <title>Covid Credential Tools</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Flex
@@ -32,7 +32,7 @@ const Home: NextPage = () => {
         p={4}
       >
         <Flex width={pageWidth}>
-          <Heading as="h1">Covid Credentials Generator</Heading>
+          <Heading as="h1">Covid Credential Tools</Heading>
         </Flex>
       </Flex>
       <Flex alignItems={'center'} justifyContent={'center'} width={'100%'}>

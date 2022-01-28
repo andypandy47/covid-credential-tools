@@ -9,20 +9,17 @@ import {
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import * as React from 'react';
+import { Styles } from '../services/constants';
 import { TestEntry } from '../services/dcc-combined-schema';
 
 interface ITestDetailsFormProps {
-  inputWidth: string;
   onFormChange(test: TestEntry): void;
 }
 
 const NATValue = 'LP6464-4';
 const RATValue = 'LP217198-3';
 
-const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({
-  inputWidth,
-  onFormChange,
-}) => {
+const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({ onFormChange }) => {
   const [tgValue, setTgValue] = React.useState('840539006');
   const [ttValue, setTtValue] = React.useState(RATValue);
   const [nmValue, setNmValue] = React.useState(
@@ -68,7 +65,7 @@ const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({
           value={tgValue}
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setTgValue(e.target.value);
             handleChange();
@@ -96,7 +93,7 @@ const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({
           <Input
             type={'text'}
             size={'sm'}
-            width={inputWidth}
+            width={Styles.InputWidth}
             value={maValue}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setMaValue(e.target.value);
@@ -110,7 +107,7 @@ const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({
           <Input
             type={'text'}
             size={'sm'}
-            width={inputWidth}
+            width={Styles.InputWidth}
             value={nmValue}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setNmValue(e.target.value);
@@ -124,7 +121,7 @@ const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({
         <Input
           type={'datetime-local'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={scValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setScValue(e.target.value);
@@ -137,7 +134,7 @@ const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={trValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setTrValue(e.target.value);
@@ -150,7 +147,7 @@ const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={tcValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setTcValue(e.target.value);
@@ -163,7 +160,7 @@ const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={coValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setCoValue(e.target.value);
@@ -176,7 +173,7 @@ const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={isValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setIsValue(e.target.value);
@@ -189,7 +186,7 @@ const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={ciValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setCiValue(e.target.value);

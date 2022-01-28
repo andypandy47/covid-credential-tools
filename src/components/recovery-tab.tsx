@@ -1,19 +1,20 @@
 import { Button, Flex, Stack, useDisclosure } from '@chakra-ui/react';
 import icaotransliteration from 'icao-transliteration';
 import * as React from 'react';
+import { Styles } from '../services/constants';
 import { EUDCC, RecoveryEntry } from '../services/dcc-combined-schema';
 import { generateDCC } from '../services/dcc-generation-service';
 import {
   IDCCGenerationResponse,
   IPersonalDetails,
   ISecurityClaims,
+  ISigningDetails,
 } from '../services/interfaces';
 import PersonalDetailsForm from './personal-details-form';
 import RecoveryDetailsForm from './recovery-details-form';
 import ResultModal from './result-modal';
 import SecurityClaimsForm from './security-claims-form';
-
-const inputWidth = '400px';
+import SigningDetailsForm from './signing-details-form';
 
 const RecoveryTab: React.FC = () => {
   const [personalDetails, setPersonalDetails] = React.useState(
@@ -24,6 +25,9 @@ const RecoveryTab: React.FC = () => {
   );
   const [recoveryDetails, setRecoveryDetails] = React.useState(
     {} as RecoveryEntry
+  );
+  const [signingDetails, setSigningDetails] = React.useState(
+    {} as ISigningDetails
   );
 
   const [generatedDCC, setGeneratedDCC] = React.useState(
@@ -51,7 +55,7 @@ const RecoveryTab: React.FC = () => {
       r: [recoveryDetails],
     };
 
-    generateDCC(dcc, securityClaims).then((value) => {
+    generateDCC(dcc, securityClaims, signingDetails).then((value) => {
       setGeneratedDCC(value);
       onOpen();
     });
@@ -59,20 +63,18 @@ const RecoveryTab: React.FC = () => {
 
   return (
     <Flex direction={'row'} mt={5} justifyContent={'space-between'}>
-      <RecoveryDetailsForm
-        inputWidth={inputWidth}
-        onFormChange={setRecoveryDetails}
-      />
+      <RecoveryDetailsForm onFormChange={setRecoveryDetails} />
       <Flex direction={'column'} justifyContent={'space-between'}>
-        <Stack direction={'column'} spacing={10}>
+        <Stack direction={'column'} spacing={6}>
           <SecurityClaimsForm
-            inputWidth={inputWidth}
+            inputWidth={Styles.InputWidth}
             onFormChange={setSecurityClaims}
           />
           <PersonalDetailsForm
-            inputWidth={inputWidth}
+            inputWidth={Styles.InputWidth}
             onFormChange={setPersonalDetails}
           />
+          <SigningDetailsForm onFormChange={setSigningDetails} />
           <Flex justifyContent={'flex-end'}>
             <Button onClick={handleGeneration}>Generate Certificate</Button>
             <ResultModal

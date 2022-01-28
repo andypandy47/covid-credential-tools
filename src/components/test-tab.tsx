@@ -6,14 +6,15 @@ import {
   IPersonalDetails,
   ISecurityClaims,
   IDCCGenerationResponse,
+  ISigningDetails,
 } from '../services/interfaces';
 import PersonalDetailsForm from './personal-details-form';
 import ResultModal from './result-modal';
 import SecurityClaimsForm from './security-claims-form';
 import TestDetailsForm from './test-details-form';
 import icaotransliteration from 'icao-transliteration';
-
-const inputWidth = '400px';
+import { Styles } from '../services/constants';
+import SigningDetailsForm from './signing-details-form';
 
 const TestTab: React.FC = () => {
   const [personalDetails, setPersonalDetails] = React.useState(
@@ -26,6 +27,9 @@ const TestTab: React.FC = () => {
 
   const [generatedDCC, setGeneratedDCC] = React.useState(
     {} as IDCCGenerationResponse
+  );
+  const [signingDetails, setSigningDetails] = React.useState(
+    {} as ISigningDetails
   );
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -49,7 +53,7 @@ const TestTab: React.FC = () => {
       t: [testDetails],
     };
 
-    generateDCC(dcc, securityClaims).then((value) => {
+    generateDCC(dcc, securityClaims, signingDetails).then((value) => {
       setGeneratedDCC(value);
       onOpen();
     });
@@ -57,17 +61,18 @@ const TestTab: React.FC = () => {
 
   return (
     <Flex direction={'row'} mt={5} justifyContent={'space-between'}>
-      <TestDetailsForm inputWidth={inputWidth} onFormChange={setTestDetails} />
+      <TestDetailsForm onFormChange={setTestDetails} />
       <Flex direction={'column'} justifyContent={'space-between'}>
-        <Stack direction={'column'} spacing={10}>
+        <Stack direction={'column'} spacing={6}>
           <SecurityClaimsForm
-            inputWidth={inputWidth}
+            inputWidth={Styles.InputWidth}
             onFormChange={setSecurityClaims}
           />
           <PersonalDetailsForm
-            inputWidth={inputWidth}
+            inputWidth={Styles.InputWidth}
             onFormChange={setPersonalDetails}
           />
+          <SigningDetailsForm onFormChange={setSigningDetails} />
           <Flex justifyContent={'flex-end'}>
             <Button onClick={handleGeneration}>Generate Certificate</Button>
             <ResultModal

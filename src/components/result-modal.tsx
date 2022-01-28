@@ -58,7 +58,7 @@ const ResultModal: React.FC<IResultModalProps> = ({
   React.useEffect(() => {
     if (generationResult.signedHcert && canvas) {
       const qrValue = generationResult.signedHcert;
-      console.log(canvas);
+
       toCanvas(
         canvas,
         qrValue,
@@ -68,8 +68,6 @@ const ResultModal: React.FC<IResultModalProps> = ({
             console.error(error);
             return;
           }
-
-          console.log('QR generation success!');
         }
       );
     }

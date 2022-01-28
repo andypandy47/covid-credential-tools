@@ -12,9 +12,7 @@ import Head from 'next/head';
 import RecoveryTab from '../components/recovery-tab';
 import TestTab from '../components/test-tab';
 import VaccinationTab from '../components/vaccination-tab';
-
-const pageWidth = '1000px';
-
+import { Styles } from '../services/constants';
 const Home: NextPage = () => {
   return (
     <Flex width="100%" height="100%" direction={'column'}>
@@ -31,18 +29,23 @@ const Home: NextPage = () => {
         color={'white'}
         p={4}
       >
-        <Flex width={pageWidth}>
+        <Flex width={Styles.PageWidth}>
           <Heading as="h1">Covid Credential Tools</Heading>
         </Flex>
       </Flex>
       <Flex alignItems={'center'} justifyContent={'center'} width={'100%'}>
-        <Tabs size="lg" variant="enclosed" mt={5} width={pageWidth}>
+        <Tabs size="lg" variant="enclosed" mt={5} width={Styles.PageWidth}>
           <TabList>
             <Tab fontWeight={'semibold'}>EU DCC</Tab>
           </TabList>
           <TabPanels>
             <TabPanel p={0}>
-              <Tabs size="md" variant="enclosed" mt={5} width={pageWidth}>
+              <Tabs
+                size="md"
+                variant="enclosed"
+                mt={5}
+                width={Styles.PageWidth}
+              >
                 <TabList>
                   <Tab>Vaccination</Tab>
                   <Tab>Recovery</Tab>

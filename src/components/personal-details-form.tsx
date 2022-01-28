@@ -18,8 +18,8 @@ const PersonalDetailsForm: React.FC<IPersonalDetailsFormProps> = ({
   inputWidth,
   onFormChange,
 }) => {
-  const [fnValue, setFnValue] = React.useState('Marcellus');
-  const [gnValue, setGnValue] = React.useState('Wallace');
+  const [gnValue, setGnValue] = React.useState('Marcellus');
+  const [fnValue, setFnValue] = React.useState('Wallace');
   const [dobValue, setDobValue] = React.useState(
     dayjs().subtract(30, 'year').format('YYYY-MM-DD')
   );

@@ -1,26 +1,25 @@
 import {
-  Heading,
   FormControl,
   FormLabel,
+  Heading,
   Input,
-  Stack,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Stack,
 } from '@chakra-ui/react';
-import * as React from 'react';
 import dayjs from 'dayjs';
+import * as React from 'react';
+import { Styles } from '../services/constants';
 import { VaccinationEntry } from '../services/dcc-combined-schema';
 
 interface IVaccinationDetailsFormProps {
-  inputWidth: string;
   onFormChange(vaccination: VaccinationEntry): void;
 }
 
 const VaccinationDetailsForm: React.FC<IVaccinationDetailsFormProps> = ({
-  inputWidth,
   onFormChange,
 }) => {
   const [tgValue, setTgValue] = React.useState('840539006');
@@ -68,7 +67,7 @@ const VaccinationDetailsForm: React.FC<IVaccinationDetailsFormProps> = ({
           value={tgValue}
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setTgValue(e.target.value);
             handleChange();
@@ -81,7 +80,7 @@ const VaccinationDetailsForm: React.FC<IVaccinationDetailsFormProps> = ({
           value={vpValue}
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setVpValue(e.target.value);
             handleChange();
@@ -93,7 +92,7 @@ const VaccinationDetailsForm: React.FC<IVaccinationDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={mpValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setMpValue(e.target.value);
@@ -106,7 +105,7 @@ const VaccinationDetailsForm: React.FC<IVaccinationDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={maValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setMaValue(e.target.value);
@@ -157,7 +156,7 @@ const VaccinationDetailsForm: React.FC<IVaccinationDetailsFormProps> = ({
         <Input
           type={'date'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={dtValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setDtValue(e.target.value);
@@ -170,7 +169,7 @@ const VaccinationDetailsForm: React.FC<IVaccinationDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={coValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setCoValue(e.target.value);
@@ -183,7 +182,7 @@ const VaccinationDetailsForm: React.FC<IVaccinationDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={isValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setIsValue(e.target.value);
@@ -196,7 +195,7 @@ const VaccinationDetailsForm: React.FC<IVaccinationDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={ciValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setCiValue(e.target.value);

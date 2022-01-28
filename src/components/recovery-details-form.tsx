@@ -7,15 +7,14 @@ import {
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import * as React from 'react';
+import { Styles } from '../services/constants';
 import { RecoveryEntry } from '../services/dcc-combined-schema';
 
 interface IRecoveryDetailsFormProps {
-  inputWidth: string;
   onFormChange(recovery: RecoveryEntry): void;
 }
 
 const RecoveryDetailsForm: React.FC<IRecoveryDetailsFormProps> = ({
-  inputWidth,
   onFormChange,
 }) => {
   const [tgValue, setTgValue] = React.useState('840539006');
@@ -61,7 +60,7 @@ const RecoveryDetailsForm: React.FC<IRecoveryDetailsFormProps> = ({
           value={tgValue}
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setTgValue(e.target.value);
             handleChange();
@@ -73,7 +72,7 @@ const RecoveryDetailsForm: React.FC<IRecoveryDetailsFormProps> = ({
         <Input
           type={'date'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={frValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setFrValue(e.target.value);
@@ -87,7 +86,7 @@ const RecoveryDetailsForm: React.FC<IRecoveryDetailsFormProps> = ({
         <Input
           type={'date'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={dfValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setDfValue(e.target.value);
@@ -100,7 +99,7 @@ const RecoveryDetailsForm: React.FC<IRecoveryDetailsFormProps> = ({
         <Input
           type={'date'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={duValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setDuValue(e.target.value);
@@ -113,7 +112,7 @@ const RecoveryDetailsForm: React.FC<IRecoveryDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={coValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setCoValue(e.target.value);
@@ -126,7 +125,7 @@ const RecoveryDetailsForm: React.FC<IRecoveryDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={isValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setIsValue(e.target.value);
@@ -139,7 +138,7 @@ const RecoveryDetailsForm: React.FC<IRecoveryDetailsFormProps> = ({
         <Input
           type={'text'}
           size={'sm'}
-          width={inputWidth}
+          width={Styles.InputWidth}
           value={ciValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setCiValue(e.target.value);

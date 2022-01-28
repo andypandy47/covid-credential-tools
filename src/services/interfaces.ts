@@ -15,3 +15,8 @@ export interface IDCCGenerationResponse {
   kid: string;
   publicKeyPem: string;
 }
+
+export interface ISigningDetails {
+  privateKeyPem: string;
+  dscPem: string;
+}

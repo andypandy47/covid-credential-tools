@@ -21,16 +21,30 @@ const SigningDetailsForm: React.FC<ISigningDetailsFormProps> = ({
   );
   const [dscValue, setDSCValue] = React.useState(DefaultValues.DSCPem);
 
-  const handleChange = () => {
+  const handlePrivateKeyChange = (newPrivateKeyValue: string) => {
+    setPrivateKeyValue(newPrivateKeyValue);
     const signingDetails: ISigningDetails = {
-      privateKeyPem: privateKeyValue,
+      privateKeyPem: newPrivateKeyValue,
       dscPem: dscValue,
     };
 
     onFormChange(signingDetails);
   };
 
-  React.useEffect(() => handleChange(), []);
+  const handleDscChange = (newDscValue: string) => {
+    setDSCValue(newDscValue);
+    const signingDetails: ISigningDetails = {
+      privateKeyPem: privateKeyValue,
+      dscPem: newDscValue,
+    };
+
+    onFormChange(signingDetails);
+  };
+
+  React.useEffect(
+    () => onFormChange({ dscPem: dscValue, privateKeyPem: privateKeyValue }),
+    []
+  );
 
   return (
     <Stack direction={'column'} spacing={3}>
@@ -42,10 +56,9 @@ const SigningDetailsForm: React.FC<ISigningDetailsFormProps> = ({
         <Textarea
           size={'xs'}
           value={privateKeyValue}
-          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setPrivateKeyValue(event.target.value);
-            handleChange();
-          }}
+          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+            handlePrivateKeyChange(event.target.value)
+          }
         />
       </FormControl>
       <FormControl>
@@ -53,10 +66,9 @@ const SigningDetailsForm: React.FC<ISigningDetailsFormProps> = ({
         <Textarea
           size={'xs'}
           value={dscValue}
-          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setDSCValue(event.target.value);
-            handleChange();
-          }}
+          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+            handleDscChange(event.target.value)
+          }
         />
       </FormControl>
     </Stack>

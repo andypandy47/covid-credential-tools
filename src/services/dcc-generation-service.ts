@@ -8,6 +8,7 @@ import { Base64 } from 'js-base64';
 import x509 from 'js-x509-utils';
 import jwkToPem from 'jwk-to-pem';
 import sha256 from 'sha256';
+import { DefaultValues } from './constants';
 import { EUDCC } from './dcc-combined-schema';
 import {
   ISigningDetails,
@@ -49,7 +50,6 @@ export const generateDCC = async (
   securityClaims: ISecurityClaims,
   signingDetails: ISigningDetails
 ): Promise<IDCCGenerationResponse> => {
-  console.log(signingDetails);
   const expEpoch = dayjs(securityClaims.expiry).unix();
   const iatEpoch = dayjs(securityClaims.issuingDate).unix();
 

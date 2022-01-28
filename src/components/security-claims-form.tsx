@@ -1,43 +1,24 @@
 import {
-  Heading,
   FormControl,
   FormLabel,
+  Heading,
   Input,
-  Stack,
+  Stack
 } from '@chakra-ui/react';
 import * as React from 'react';
-import dayjs from 'dayjs';
 import { ISecurityClaims } from '../services/interfaces';
 
 interface ISecurityClaimsFormProps {
   inputWidth: string;
+  securityClaims: ISecurityClaims;
   onFormChange(securityClaims: ISecurityClaims): void;
 }
 
 const SecurityClaimsForm: React.FC<ISecurityClaimsFormProps> = ({
   inputWidth,
-  onFormChange,
+  securityClaims,
+  onFormChange
 }) => {
-  const [issCountryValue, setIssValue] = React.useState('GB');
-  const [iatValue, setIatDateValue] = React.useState(
-    dayjs().subtract(6, 'month').format('YYYY-MM-DD')
-  );
-  const [expValue, setExpValue] = React.useState(
-    dayjs().add(6, 'month').format('YYYY-MM-DD')
-  );
-
-  const handleChange = () => {
-    const securityClaims: ISecurityClaims = {
-      issuerCountry: issCountryValue,
-      issuingDate: iatValue,
-      expiry: expValue,
-    };
-
-    onFormChange(securityClaims);
-  };
-
-  React.useEffect(() => handleChange(), []);
-
   return (
     <Stack direction={'column'} spacing={3}>
       <Heading as="h3" size="lg">
@@ -49,11 +30,10 @@ const SecurityClaimsForm: React.FC<ISecurityClaimsFormProps> = ({
           type={'text'}
           size={'sm'}
           width={inputWidth}
-          value={issCountryValue}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setIssValue(e.target.value);
-            handleChange();
-          }}
+          value={securityClaims.issuerCountry}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onFormChange({ ...securityClaims, issuerCountry: e.target.value })
+          }
         />
       </FormControl>
       <FormControl>
@@ -62,11 +42,10 @@ const SecurityClaimsForm: React.FC<ISecurityClaimsFormProps> = ({
           type={'date'}
           size={'sm'}
           width={inputWidth}
-          value={iatValue}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setIatDateValue(e.target.value);
-            handleChange();
-          }}
+          value={securityClaims.issuingDate}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onFormChange({ ...securityClaims, issuingDate: e.target.value })
+          }
         />
       </FormControl>
       <FormControl>
@@ -75,11 +54,10 @@ const SecurityClaimsForm: React.FC<ISecurityClaimsFormProps> = ({
           type={'date'}
           size={'sm'}
           width={inputWidth}
-          value={expValue}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setExpValue(e.target.value);
-            handleChange();
-          }}
+          value={securityClaims.expiry}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onFormChange({ ...securityClaims, expiry: e.target.value })
+          }
         />
       </FormControl>
     </Stack>

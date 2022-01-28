@@ -1,41 +1,24 @@
 import {
-  Heading,
   FormControl,
   FormLabel,
+  Heading,
   Input,
-  Stack,
+  Stack
 } from '@chakra-ui/react';
-import dayjs from 'dayjs';
 import * as React from 'react';
 import { IPersonalDetails } from '../services/interfaces';
 
 interface IPersonalDetailsFormProps {
   inputWidth: string;
+  personalDetails: IPersonalDetails;
   onFormChange(personalDetails: IPersonalDetails): void;
 }
 
 const PersonalDetailsForm: React.FC<IPersonalDetailsFormProps> = ({
   inputWidth,
-  onFormChange,
+  personalDetails,
+  onFormChange
 }) => {
-  const [gnValue, setGnValue] = React.useState('Marcellus');
-  const [fnValue, setFnValue] = React.useState('Wallace');
-  const [dobValue, setDobValue] = React.useState(
-    dayjs().subtract(30, 'year').format('YYYY-MM-DD')
-  );
-
-  const handleChange = () => {
-    const personalDetails: IPersonalDetails = {
-      givenName: gnValue,
-      foreName: fnValue,
-      dob: dobValue,
-    };
-
-    onFormChange(personalDetails);
-  };
-
-  React.useEffect(() => handleChange(), []);
-
   return (
     <Stack direction={'column'} spacing={3}>
       <Heading as="h3" size="lg">
@@ -48,11 +31,10 @@ const PersonalDetailsForm: React.FC<IPersonalDetailsFormProps> = ({
           type={'text'}
           size={'sm'}
           width={inputWidth}
-          value={gnValue}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setGnValue(event.target.value);
-            handleChange();
-          }}
+          value={personalDetails.givenName}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onFormChange({ ...personalDetails, givenName: e.target.value })
+          }
         />
       </FormControl>
       <FormControl>
@@ -62,11 +44,10 @@ const PersonalDetailsForm: React.FC<IPersonalDetailsFormProps> = ({
           type={'text'}
           size={'sm'}
           width={inputWidth}
-          value={fnValue}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setFnValue(event.target.value);
-            handleChange();
-          }}
+          value={personalDetails.foreName}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onFormChange({ ...personalDetails, foreName: e.target.value })
+          }
         />
       </FormControl>
       <FormControl>
@@ -75,11 +56,10 @@ const PersonalDetailsForm: React.FC<IPersonalDetailsFormProps> = ({
           type={'date'}
           size={'sm'}
           width={inputWidth}
-          value={dobValue}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setDobValue(event.target.value);
-            handleChange();
-          }}
+          value={personalDetails.dob}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onFormChange({ ...personalDetails, dob: e.target.value })
+          }
         />
       </FormControl>
     </Stack>

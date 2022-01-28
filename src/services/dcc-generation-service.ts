@@ -8,12 +8,11 @@ import { Base64 } from 'js-base64';
 import x509 from 'js-x509-utils';
 import jwkToPem from 'jwk-to-pem';
 import sha256 from 'sha256';
-import { DefaultValues } from './constants';
 import { EUDCC } from './dcc-combined-schema';
 import {
-  ISigningDetails,
   IDCCGenerationResponse,
   ISecurityClaims,
+  ISigningDetails
 } from './interfaces';
 
 const certPrefix = '-----BEGIN CERTIFICATE-----\n';
@@ -73,15 +72,15 @@ export const generateDCC = async (
   const headers = {
     p: {
       alg: 'ES256',
-      kid: kid,
+      kid: kid
     },
-    u: {},
+    u: {}
   };
 
   const signer = {
     key: {
-      d: Buffer.from(privateKey.d),
-    },
+      d: Buffer.from(privateKey.d)
+    }
   };
 
   const signedCose = (await cose.sign.create(
@@ -99,6 +98,6 @@ export const generateDCC = async (
   return {
     signedHcert: prefixed,
     kid: Buffer.from(kid).toString('base64'),
-    publicKeyPem: publicKeyPem,
+    publicKeyPem: publicKeyPem
   } as IDCCGenerationResponse;
 };

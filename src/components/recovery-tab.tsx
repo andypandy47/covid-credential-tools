@@ -1,15 +1,10 @@
 import { Button, Flex, Stack, useDisclosure } from '@chakra-ui/react';
 import icaotransliteration from 'icao-transliteration';
 import * as React from 'react';
-import { Styles } from '../services/constants';
-import { EUDCC, RecoveryEntry } from '../services/dcc-combined-schema';
+import { DefaultValues, Styles } from '../services/constants';
+import { EUDCC } from '../services/dcc-combined-schema';
 import { generateDCC } from '../services/dcc-generation-service';
-import {
-  IDCCGenerationResponse,
-  IPersonalDetails,
-  ISecurityClaims,
-  ISigningDetails,
-} from '../services/interfaces';
+import { IDCCGenerationResponse } from '../services/interfaces';
 import PersonalDetailsForm from './personal-details-form';
 import RecoveryDetailsForm from './recovery-details-form';
 import ResultModal from './result-modal';
@@ -18,16 +13,16 @@ import SigningDetailsForm from './signing-details-form';
 
 const RecoveryTab: React.FC = () => {
   const [personalDetails, setPersonalDetails] = React.useState(
-    {} as IPersonalDetails
+    DefaultValues.PersonalDetails
   );
   const [securityClaims, setSecurityClaims] = React.useState(
-    {} as ISecurityClaims
+    DefaultValues.SecurityClaims
   );
   const [recoveryDetails, setRecoveryDetails] = React.useState(
-    {} as RecoveryEntry
+    DefaultValues.RecoveryEntry
   );
   const [signingDetails, setSigningDetails] = React.useState(
-    {} as ISigningDetails
+    DefaultValues.SigningDetails
   );
 
   const [generatedDCC, setGeneratedDCC] = React.useState(
@@ -49,10 +44,10 @@ const RecoveryTab: React.FC = () => {
         gn: personalDetails.givenName,
         gnt: gnTransliterated,
         fn: personalDetails.foreName,
-        fnt: fnTransliterated,
+        fnt: fnTransliterated
       },
       dob: personalDetails.dob,
-      r: [recoveryDetails],
+      r: [recoveryDetails]
     };
 
     generateDCC(dcc, securityClaims, signingDetails).then((value) => {
@@ -63,18 +58,26 @@ const RecoveryTab: React.FC = () => {
 
   return (
     <Flex direction={'row'} mt={5} justifyContent={'space-between'}>
-      <RecoveryDetailsForm onFormChange={setRecoveryDetails} />
+      <RecoveryDetailsForm
+        recoveryDetails={recoveryDetails}
+        onFormChange={setRecoveryDetails}
+      />
       <Flex direction={'column'} justifyContent={'space-between'}>
         <Stack direction={'column'} spacing={6}>
           <SecurityClaimsForm
             inputWidth={Styles.InputWidth}
+            securityClaims={securityClaims}
             onFormChange={setSecurityClaims}
           />
           <PersonalDetailsForm
+            personalDetails={personalDetails}
             inputWidth={Styles.InputWidth}
             onFormChange={setPersonalDetails}
           />
-          <SigningDetailsForm onFormChange={setSigningDetails} />
+          <SigningDetailsForm
+            signingDetails={signingDetails}
+            onFormChange={setSigningDetails}
+          />
           <Flex justifyContent={'flex-end'}>
             <Button onClick={handleGeneration}>Generate Certificate</Button>
             <ResultModal

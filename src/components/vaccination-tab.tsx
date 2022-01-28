@@ -1,33 +1,28 @@
 import { Button, Flex, Stack, useDisclosure } from '@chakra-ui/react';
+import icaotransliteration from 'icao-transliteration';
 import * as React from 'react';
-import { EUDCC, VaccinationEntry } from '../services/dcc-combined-schema';
-import {
-  ISigningDetails,
-  IDCCGenerationResponse,
-  IPersonalDetails,
-  ISecurityClaims,
-} from '../services/interfaces';
+import { DefaultValues, Styles } from '../services/constants';
+import { EUDCC } from '../services/dcc-combined-schema';
+import { generateDCC } from '../services/dcc-generation-service';
+import { IDCCGenerationResponse } from '../services/interfaces';
 import PersonalDetailsForm from './personal-details-form';
 import ResultModal from './result-modal';
 import SecurityClaimsForm from './security-claims-form';
-import VaccinationDetailsForm from './vaccination-details-form';
-import icaotransliteration from 'icao-transliteration';
-import { generateDCC } from '../services/dcc-generation-service';
-import { Styles } from '../services/constants';
 import SigningDetailsForm from './signing-details-form';
+import VaccinationDetailsForm from './vaccination-details-form';
 
 const VaccinationTab: React.FC = () => {
   const [personalDetails, setPersonalDetails] = React.useState(
-    {} as IPersonalDetails
+    DefaultValues.PersonalDetails
   );
   const [securityClaims, setSecurityClaims] = React.useState(
-    {} as ISecurityClaims
+    DefaultValues.SecurityClaims
   );
   const [vaccinationDetails, setVaccinationDetails] = React.useState(
-    {} as VaccinationEntry
+    DefaultValues.VaccinationEntry
   );
   const [signingDetails, setSigningDetails] = React.useState(
-    {} as ISigningDetails
+    DefaultValues.SigningDetails
   );
 
   const [generatedDCC, setGeneratedDCC] = React.useState(
@@ -49,10 +44,10 @@ const VaccinationTab: React.FC = () => {
         gn: personalDetails.givenName,
         gnt: gnTransliterated,
         fn: personalDetails.foreName,
-        fnt: fnTransliterated,
+        fnt: fnTransliterated
       },
       dob: personalDetails.dob,
-      v: [vaccinationDetails],
+      v: [vaccinationDetails]
     };
 
     generateDCC(dcc, securityClaims, signingDetails).then((value) => {
@@ -63,18 +58,26 @@ const VaccinationTab: React.FC = () => {
 
   return (
     <Flex direction={'row'} mt={5} justifyContent={'space-between'}>
-      <VaccinationDetailsForm onFormChange={setVaccinationDetails} />
+      <VaccinationDetailsForm
+        vaccinationDetails={vaccinationDetails}
+        onFormChange={setVaccinationDetails}
+      />
       <Flex direction={'column'} justifyContent={'space-between'}>
         <Stack direction={'column'} spacing={6}>
           <SecurityClaimsForm
             inputWidth={Styles.InputWidth}
+            securityClaims={securityClaims}
             onFormChange={setSecurityClaims}
           />
           <PersonalDetailsForm
+            personalDetails={personalDetails}
             inputWidth={Styles.InputWidth}
             onFormChange={setPersonalDetails}
           />
-          <SigningDetailsForm onFormChange={setSigningDetails} />
+          <SigningDetailsForm
+            signingDetails={signingDetails}
+            onFormChange={setSigningDetails}
+          />
           <Flex justifyContent={'flex-end'}>
             <Button onClick={handleGeneration}>Generate Certificate</Button>
             <ResultModal

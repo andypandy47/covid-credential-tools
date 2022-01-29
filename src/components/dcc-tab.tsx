@@ -26,6 +26,7 @@ import RecoveryTab from 'components/dcc/recovery-tab';
 import ResultModal from 'components/dcc/result-modal';
 import TestTab from 'components/dcc/test-tab';
 import VaccinationTab from 'components/dcc/vaccination-tab';
+import DecodeTab from './dcc/decode-tab';
 
 const DCCTab: React.FC = () => {
   const [generatedDCC, setGeneratedDCC] = React.useState(
@@ -103,6 +104,7 @@ const DCCTab: React.FC = () => {
           <Tab>Vaccination</Tab>
           <Tab>Recovery</Tab>
           <Tab>Test</Tab>
+          <Tab>Decode</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -113,6 +115,9 @@ const DCCTab: React.FC = () => {
           </TabPanel>
           <TabPanel>
             <TestTab onSubmit={handleGeneration} />
+          </TabPanel>
+          <TabPanel>
+            <DecodeTab />
           </TabPanel>
         </TabPanels>
       </Tabs>

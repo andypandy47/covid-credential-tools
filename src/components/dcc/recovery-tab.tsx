@@ -7,10 +7,10 @@ import {
   ISecurityClaims,
   ISigningDetails
 } from 'services/interfaces';
-import PersonalDetailsForm from './personal-details-form';
-import RecoveryDetailsForm from './recovery-details-form';
-import SecurityClaimsForm from './security-claims-form';
-import SigningDetailsForm from './signing-details-form';
+import PersonalDetailsForm from './forms/personal-details-form';
+import RecoveryDetailsForm from './forms/recovery-details-form';
+import SecurityClaimsForm from './forms/security-claims-form';
+import SigningDetailsForm from './forms/signing-details-form';
 
 interface IRecoveryTabProps {
   onSubmit(

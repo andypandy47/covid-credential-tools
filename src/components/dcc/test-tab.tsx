@@ -7,10 +7,10 @@ import {
   ISecurityClaims,
   ISigningDetails
 } from 'services/interfaces';
-import PersonalDetailsForm from './personal-details-form';
-import SecurityClaimsForm from './security-claims-form';
-import SigningDetailsForm from './signing-details-form';
-import TestDetailsForm from './test-details-form';
+import PersonalDetailsForm from './forms/personal-details-form';
+import SecurityClaimsForm from './forms/security-claims-form';
+import SigningDetailsForm from './forms/signing-details-form';
+import TestDetailsForm from './forms/test-details-form';
 
 interface ITestTabProps {
   onSubmit(

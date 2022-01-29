@@ -8,10 +8,15 @@ import { Base64 } from 'js-base64';
 import x509 from 'js-x509-utils';
 import jwkToPem from 'jwk-to-pem';
 import sha256 from 'sha256';
+import {
+  supportedAlgorithms,
+  x509AlgorithmsToCOSEAlgortihms
+} from './constants';
 import { EUDCC } from './dcc-combined-schema';
 import {
   IDCCGenerationResponse,
   ISecurityClaims,
+  ISigner,
   ISigningDetails
 } from './interfaces';
 
@@ -44,6 +49,31 @@ const getPublicKeyPem = async (dscPem: string): Promise<string> => {
   return jwkToPem(publicJwk);
 };
 
+const getSigningAlgorithm = async (dscPem: string): Promise<string> => {
+  const parsedX509 = await x509.parse(dscPem, 'pem');
+
+  return x509AlgorithmsToCOSEAlgortihms[
+    parsedX509.signatureAlgorithm.algorithm
+  ];
+};
+
+const getPrivateKeySigner = (
+  privateKeyPem: string,
+  signingAlgorithm: string
+): ISigner => {
+  if (supportedAlgorithms.includes(signingAlgorithm)) {
+    const privateECKey = new ecKey(privateKeyPem);
+
+    return {
+      key: {
+        d: Buffer.from(privateECKey.d)
+      }
+    };
+  }
+
+  throw new Error(`Unsupported signing algorithm: ${signingAlgorithm}`);
+};
+
 export const generateDCC = async (
   eudccPayload: EUDCC,
   securityClaims: ISecurityClaims,
@@ -63,30 +93,28 @@ export const generateDCC = async (
 
   const cborPayload = cbor.encode(fullPayloadMap);
 
-  const privateKey = new ecKey(signingDetails.privateKeyPem, 'pem');
-
   const publicKeyPem = await getPublicKeyPem(signingDetails.dscPem);
 
   const kid = extractKid(signingDetails.dscPem);
+  const signingAlgorithm = await getSigningAlgorithm(signingDetails.dscPem);
+
+  const privateKeySigner = getPrivateKeySigner(
+    signingDetails.privateKeyPem,
+    signingAlgorithm
+  );
 
   const headers = {
     p: {
-      alg: 'ES256',
+      alg: signingAlgorithm,
       kid: kid
     },
     u: {}
   };
 
-  const signer = {
-    key: {
-      d: Buffer.from(privateKey.d)
-    }
-  };
-
   const signedCose = (await cose.sign.create(
     headers,
     cborPayload,
-    signer
+    privateKeySigner
   )) as Buffer;
 
   const zippedCose = zlib.deflateSync(signedCose);

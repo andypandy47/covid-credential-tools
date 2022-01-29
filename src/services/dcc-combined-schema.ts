@@ -204,7 +204,7 @@ export interface DomesticEntry {
 
   pm: number;
 
-  po: []
+  po: [];
 
   [k: string]: unknown;
 }

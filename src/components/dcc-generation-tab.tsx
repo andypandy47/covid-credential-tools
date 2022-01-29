@@ -92,7 +92,7 @@ const DCCGenerationTab: React.FC = () => {
 
         return { t: [testEntry] };
       default:
-        throw new Error('DCC Type not set!');
+        throw new Error('DCC Type not set');
     }
   };
 

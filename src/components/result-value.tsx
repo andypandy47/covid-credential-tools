@@ -5,7 +5,7 @@ import {
   IconButton,
   Heading,
   Textarea,
-  useToast,
+  useToast
 } from '@chakra-ui/react';
 import * as React from 'react';
 
@@ -20,7 +20,7 @@ const ResultValue: React.FC<IResultValueProps> = ({
   label,
   value,
   height,
-  onCopy,
+  onCopy
 }) => {
   const toast = useToast();
 
@@ -30,7 +30,7 @@ const ResultValue: React.FC<IResultValueProps> = ({
       variant: 'subtle',
       isClosable: true,
       status: 'info',
-      duration: 3000,
+      duration: 3000
     });
     onCopy();
   };

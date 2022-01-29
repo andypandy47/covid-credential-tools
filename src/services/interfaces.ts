@@ -1,3 +1,5 @@
+import { DCCEntryType } from './constants';
+
 export interface IPersonalDetails {
   givenName: string;
   foreName: string;
@@ -14,6 +16,7 @@ export interface IDCCGenerationResponse {
   signedHcert: string;
   kid: string;
   publicKeyPem: string;
+  dccType: DCCEntryType;
 }
 
 export interface ISigningDetails {
@@ -22,7 +25,7 @@ export interface ISigningDetails {
 }
 
 export interface ISigner {
-  key: IECSigner
+  key: IECSigner;
 }
 
 export interface IECSigner {

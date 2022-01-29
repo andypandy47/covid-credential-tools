@@ -10,10 +10,11 @@ import {
   ModalFooter,
   ModalOverlay,
   useClipboard,
-  VStack,
+  VStack
 } from '@chakra-ui/react';
 import { toCanvas } from 'qrcode';
 import * as React from 'react';
+import { DCCEntryType } from '../services/constants';
 import { IDCCGenerationResponse } from '../services/interfaces';
 import ResultValue from './result-value';
 
@@ -21,14 +22,12 @@ interface IResultModalProps {
   isOpen: boolean;
   onClose(): void;
   generationResult: IDCCGenerationResponse;
-  QRTitle: string;
 }
 
 const ResultModal: React.FC<IResultModalProps> = ({
   isOpen,
   onClose,
-  generationResult,
-  QRTitle,
+  generationResult
 }) => {
   const [canvas, setCanvas] = React.useState<HTMLCanvasElement>(
     {} as HTMLCanvasElement
@@ -86,7 +85,7 @@ const ResultModal: React.FC<IResultModalProps> = ({
           >
             <Flex direction={'column'} flex={1}>
               <Heading as="h3" size={'lg'}>
-                {QRTitle}
+                {`${DCCEntryType[generationResult.dccType]} QR`}
               </Heading>
               <canvas id="canvas" ref={qrRef} />
             </Flex>

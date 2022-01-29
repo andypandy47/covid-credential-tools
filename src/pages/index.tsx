@@ -5,13 +5,11 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs,
+  Tabs
 } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import RecoveryTab from '../components/recovery-tab';
-import TestTab from '../components/test-tab';
-import VaccinationTab from '../components/vaccination-tab';
+import DCCGenerationTab from '../components/dcc-generation-tab';
 import { Styles } from '../services/constants';
 const Home: NextPage = () => {
   return (
@@ -40,29 +38,7 @@ const Home: NextPage = () => {
           </TabList>
           <TabPanels>
             <TabPanel p={0}>
-              <Tabs
-                size="md"
-                variant="enclosed"
-                mt={5}
-                width={Styles.PageWidth}
-              >
-                <TabList>
-                  <Tab>Vaccination</Tab>
-                  <Tab>Recovery</Tab>
-                  <Tab>Test</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel>
-                    <VaccinationTab />
-                  </TabPanel>
-                  <TabPanel>
-                    <RecoveryTab />
-                  </TabPanel>
-                  <TabPanel>
-                    <TestTab />
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
+              <DCCGenerationTab />
             </TabPanel>
           </TabPanels>
         </Tabs>

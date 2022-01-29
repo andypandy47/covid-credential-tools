@@ -1,17 +1,28 @@
-import { Button, Flex, Stack, useDisclosure } from '@chakra-ui/react';
-import icaotransliteration from 'icao-transliteration';
+import { Button, Flex, Stack } from '@chakra-ui/react';
 import * as React from 'react';
-import { DCCValues, DefaultValues, Styles } from '../services/constants';
-import { EUDCC } from '../services/dcc-combined-schema';
-import { generateDCC } from '../services/dcc-generation-service';
-import { IDCCGenerationResponse } from '../services/interfaces';
+import { DCCEntryType, DefaultValues, Styles } from '../services/constants';
+import { TestEntry } from '../services/dcc-combined-schema';
+import {
+  IPersonalDetails,
+  ISecurityClaims,
+  ISigningDetails
+} from '../services/interfaces';
 import PersonalDetailsForm from './personal-details-form';
-import ResultModal from './result-modal';
 import SecurityClaimsForm from './security-claims-form';
 import SigningDetailsForm from './signing-details-form';
 import TestDetailsForm from './test-details-form';
 
-const TestTab: React.FC = () => {
+interface ITestTabProps {
+  onSubmit(
+    personalDetails: IPersonalDetails,
+    securityClaims: ISecurityClaims,
+    signingDetails: ISigningDetails,
+    testDetails: TestEntry,
+    dccType: DCCEntryType
+  ): void;
+}
+
+const TestTab: React.FC<ITestTabProps> = ({ onSubmit }) => {
   const [personalDetails, setPersonalDetails] = React.useState(
     DefaultValues.PersonalDetails
   );
@@ -22,46 +33,6 @@ const TestTab: React.FC = () => {
   const [signingDetails, setSigningDetails] = React.useState(
     DefaultValues.SigningDetails
   );
-
-  const [generatedDCC, setGeneratedDCC] = React.useState(
-    {} as IDCCGenerationResponse
-  );
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const handleGeneration = async () => {
-    const fnTransliterated = icaotransliteration(
-      personalDetails.foreName.toUpperCase()
-    );
-    const gnTransliterated = icaotransliteration(
-      personalDetails.givenName.toUpperCase()
-    );
-
-    const testEntry = { ...testDetails };
-
-    if (testEntry.tt === DCCValues.NAATValue) {
-      delete testEntry.ma;
-    } else {
-      delete testEntry.nm;
-    }
-
-    const dcc: EUDCC = {
-      ver: '1.3.0',
-      nam: {
-        gn: personalDetails.givenName,
-        gnt: gnTransliterated,
-        fn: personalDetails.foreName,
-        fnt: fnTransliterated
-      },
-      dob: personalDetails.dob,
-      t: [testEntry]
-    };
-
-    generateDCC(dcc, securityClaims, signingDetails).then((value) => {
-      setGeneratedDCC(value);
-      onOpen();
-    });
-  };
 
   return (
     <Flex direction={'row'} mt={5} justifyContent={'space-between'}>
@@ -86,13 +57,19 @@ const TestTab: React.FC = () => {
             onFormChange={setSigningDetails}
           />
           <Flex justifyContent={'flex-end'}>
-            <Button onClick={handleGeneration}>Generate Certificate</Button>
-            <ResultModal
-              isOpen={isOpen}
-              onClose={onClose}
-              generationResult={generatedDCC}
-              QRTitle="Test QR"
-            />
+            <Button
+              onClick={() =>
+                onSubmit(
+                  personalDetails,
+                  securityClaims,
+                  signingDetails,
+                  testDetails,
+                  DCCEntryType.Test
+                )
+              }
+            >
+              Generate Certificate
+            </Button>
           </Flex>
         </Stack>
       </Flex>

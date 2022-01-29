@@ -1,6 +1,6 @@
 # Covid Credentials Tool
 
-Allows users to generate, read and verify Covid Credentials according to multiple standards
+Allows users to generate, read and verify Covid Credentials as define by various international standards
 
 **Features**
 

@@ -8,8 +8,8 @@ import {
   Stack
 } from '@chakra-ui/react';
 import * as React from 'react';
-import { DCCValues, Styles } from '../services/constants';
-import { TestEntry } from '../services/dcc-combined-schema';
+import { DCCValues, Styles } from 'services/constants';
+import { TestEntry } from 'services/dcc-combined-schema';
 
 interface ITestDetailsFormProps {
   testDetails: TestEntry;

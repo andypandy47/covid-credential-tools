@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Tab,
   TabList,
@@ -7,27 +8,26 @@ import {
   useDisclosure
 } from '@chakra-ui/react';
 import icaotransliteration from 'icao-transliteration';
-import * as React from 'react';
-import { DCCEntryType, DCCValues, Styles } from '../services/constants';
+import { DCCEntryType, DCCValues, Styles } from 'services/constants';
 import {
   EUDCC,
   RecoveryEntry,
   TestEntry,
   VaccinationEntry
-} from '../services/dcc-combined-schema';
-import { generateDCC } from '../services/dcc-generation-service';
+} from 'services/dcc-combined-schema';
+import { generateDCC } from 'services/dcc-generation-service';
 import {
   IDCCGenerationResponse,
   IPersonalDetails,
   ISecurityClaims,
   ISigningDetails
-} from '../services/interfaces';
-import RecoveryTab from './recovery-tab';
-import ResultModal from './result-modal';
-import TestTab from './test-tab';
-import VaccinationTab from './vaccination-tab';
+} from 'services/interfaces';
+import RecoveryTab from 'components/dcc/recovery-tab';
+import ResultModal from 'components/dcc/result-modal';
+import TestTab from 'components/dcc/test-tab';
+import VaccinationTab from 'components/dcc/vaccination-tab';
 
-const DCCGenerationTab: React.FC = () => {
+const DCCTab: React.FC = () => {
   const [generatedDCC, setGeneratedDCC] = React.useState(
     {} as IDCCGenerationResponse
   );
@@ -98,7 +98,7 @@ const DCCGenerationTab: React.FC = () => {
 
   return (
     <>
-      <Tabs size="md" variant="enclosed" mt={5} width={Styles.PageWidth}>
+      <Tabs size="md" variant="enclosed" mt={5} width={Styles.PageWidth} isLazy>
         <TabList>
           <Tab>Vaccination</Tab>
           <Tab>Recovery</Tab>
@@ -125,4 +125,4 @@ const DCCGenerationTab: React.FC = () => {
   );
 };
 
-export default DCCGenerationTab;
+export default DCCTab;

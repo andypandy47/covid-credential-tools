@@ -14,8 +14,8 @@ import {
 } from '@chakra-ui/react';
 import { toCanvas } from 'qrcode';
 import * as React from 'react';
-import { DCCEntryType } from '../services/constants';
-import { IDCCGenerationResponse } from '../services/interfaces';
+import { DCCEntryType } from 'services/constants';
+import { IDCCGenerationResponse } from 'services/interfaces';
 import ResultValue from './result-value';
 
 interface IResultModalProps {

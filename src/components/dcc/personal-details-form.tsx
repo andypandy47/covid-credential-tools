@@ -6,57 +6,59 @@ import {
   Stack
 } from '@chakra-ui/react';
 import * as React from 'react';
-import { ISecurityClaims } from '../services/interfaces';
+import { IPersonalDetails } from 'services/interfaces';
 
-interface ISecurityClaimsFormProps {
+interface IPersonalDetailsFormProps {
   inputWidth: string;
-  securityClaims: ISecurityClaims;
-  onFormChange(securityClaims: ISecurityClaims): void;
+  personalDetails: IPersonalDetails;
+  onFormChange(personalDetails: IPersonalDetails): void;
 }
 
-const SecurityClaimsForm: React.FC<ISecurityClaimsFormProps> = ({
+const PersonalDetailsForm: React.FC<IPersonalDetailsFormProps> = ({
   inputWidth,
-  securityClaims,
+  personalDetails,
   onFormChange
 }) => {
   return (
     <Stack direction={'column'} spacing={3}>
       <Heading as="h3" size="lg">
-        Security Claims
+        Personal Info
       </Heading>
       <FormControl>
-        <FormLabel>Issuing Country</FormLabel>
+        <FormLabel>First Name</FormLabel>
         <Input
+          placeholder="Marcellus"
           type={'text'}
           size={'sm'}
           width={inputWidth}
-          value={securityClaims.issuerCountry}
+          value={personalDetails.givenName}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onFormChange({ ...securityClaims, issuerCountry: e.target.value })
+            onFormChange({ ...personalDetails, givenName: e.target.value })
           }
         />
       </FormControl>
       <FormControl>
-        <FormLabel>Issued At</FormLabel>
+        <FormLabel>Last Name</FormLabel>
         <Input
-          type={'date'}
+          placeholder="Wallace"
+          type={'text'}
           size={'sm'}
           width={inputWidth}
-          value={securityClaims.issuingDate}
+          value={personalDetails.foreName}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onFormChange({ ...securityClaims, issuingDate: e.target.value })
+            onFormChange({ ...personalDetails, foreName: e.target.value })
           }
         />
       </FormControl>
       <FormControl>
-        <FormLabel>Expiry</FormLabel>
+        <FormLabel>Date of Birth</FormLabel>
         <Input
           type={'date'}
           size={'sm'}
           width={inputWidth}
-          value={securityClaims.expiry}
+          value={personalDetails.dob}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onFormChange({ ...securityClaims, expiry: e.target.value })
+            onFormChange({ ...personalDetails, dob: e.target.value })
           }
         />
       </FormControl>
@@ -64,4 +66,4 @@ const SecurityClaimsForm: React.FC<ISecurityClaimsFormProps> = ({
   );
 };
 
-export default SecurityClaimsForm;
+export default PersonalDetailsForm;

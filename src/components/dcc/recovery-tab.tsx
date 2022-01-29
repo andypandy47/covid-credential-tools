@@ -1,36 +1,36 @@
 import { Button, Flex, Stack } from '@chakra-ui/react';
 import * as React from 'react';
-import { DCCEntryType, DefaultValues, Styles } from '../services/constants';
-import { VaccinationEntry } from '../services/dcc-combined-schema';
+import { DCCEntryType, DefaultValues, Styles } from 'services/constants';
+import { RecoveryEntry } from 'services/dcc-combined-schema';
 import {
   IPersonalDetails,
   ISecurityClaims,
   ISigningDetails
-} from '../services/interfaces';
+} from 'services/interfaces';
 import PersonalDetailsForm from './personal-details-form';
+import RecoveryDetailsForm from './recovery-details-form';
 import SecurityClaimsForm from './security-claims-form';
 import SigningDetailsForm from './signing-details-form';
-import VaccinationDetailsForm from './vaccination-details-form';
 
-interface IVaccinationTabProps {
+interface IRecoveryTabProps {
   onSubmit(
     personalDetails: IPersonalDetails,
     securityClaims: ISecurityClaims,
     signingDetails: ISigningDetails,
-    vaccinationDetails: VaccinationEntry,
+    recoveryDetails: RecoveryEntry,
     dccType: DCCEntryType
   ): void;
 }
 
-const VaccinationTab: React.FC<IVaccinationTabProps> = ({ onSubmit }) => {
+const RecoveryTab: React.FC<IRecoveryTabProps> = ({ onSubmit }) => {
   const [personalDetails, setPersonalDetails] = React.useState(
     DefaultValues.PersonalDetails
   );
   const [securityClaims, setSecurityClaims] = React.useState(
     DefaultValues.SecurityClaims
   );
-  const [vaccinationDetails, setVaccinationDetails] = React.useState(
-    DefaultValues.VaccinationEntry
+  const [recoveryDetails, setRecoveryDetails] = React.useState(
+    DefaultValues.RecoveryEntry
   );
   const [signingDetails, setSigningDetails] = React.useState(
     DefaultValues.SigningDetails
@@ -38,9 +38,9 @@ const VaccinationTab: React.FC<IVaccinationTabProps> = ({ onSubmit }) => {
 
   return (
     <Flex direction={'row'} mt={5} justifyContent={'space-between'}>
-      <VaccinationDetailsForm
-        vaccinationDetails={vaccinationDetails}
-        onFormChange={setVaccinationDetails}
+      <RecoveryDetailsForm
+        recoveryDetails={recoveryDetails}
+        onFormChange={setRecoveryDetails}
       />
       <Flex direction={'column'} justifyContent={'space-between'}>
         <Stack direction={'column'} spacing={6}>
@@ -65,8 +65,8 @@ const VaccinationTab: React.FC<IVaccinationTabProps> = ({ onSubmit }) => {
                   personalDetails,
                   securityClaims,
                   signingDetails,
-                  vaccinationDetails,
-                  DCCEntryType.Vaccination
+                  recoveryDetails,
+                  DCCEntryType.Recovery
                 )
               }
             >
@@ -79,4 +79,4 @@ const VaccinationTab: React.FC<IVaccinationTabProps> = ({ onSubmit }) => {
   );
 };
 
-export default VaccinationTab;
+export default RecoveryTab;

@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import DCCGenerationTab from '../components/dcc-generation-tab';
+import DCCTab from '../components/dcc-tab';
 import { Styles } from '../services/constants';
 const Home: NextPage = () => {
   return (
@@ -32,13 +32,19 @@ const Home: NextPage = () => {
         </Flex>
       </Flex>
       <Flex alignItems={'center'} justifyContent={'center'} width={'100%'}>
-        <Tabs size="lg" variant="enclosed" mt={5} width={Styles.PageWidth}>
+        <Tabs
+          size="lg"
+          variant="enclosed"
+          mt={5}
+          width={Styles.PageWidth}
+          isLazy
+        >
           <TabList>
             <Tab fontWeight={'semibold'}>EU DCC</Tab>
           </TabList>
           <TabPanels>
             <TabPanel p={0}>
-              <DCCGenerationTab />
+              <DCCTab />
             </TabPanel>
           </TabPanels>
         </Tabs>

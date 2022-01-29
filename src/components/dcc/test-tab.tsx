@@ -1,12 +1,12 @@
 import { Button, Flex, Stack } from '@chakra-ui/react';
 import * as React from 'react';
-import { DCCEntryType, DefaultValues, Styles } from '../services/constants';
-import { TestEntry } from '../services/dcc-combined-schema';
+import { DCCEntryType, DefaultValues, Styles } from 'services/constants';
+import { TestEntry } from 'services/dcc-combined-schema';
 import {
   IPersonalDetails,
   ISecurityClaims,
   ISigningDetails
-} from '../services/interfaces';
+} from 'services/interfaces';
 import PersonalDetailsForm from './personal-details-form';
 import SecurityClaimsForm from './security-claims-form';
 import SigningDetailsForm from './signing-details-form';

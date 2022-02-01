@@ -18,13 +18,13 @@ import { DCCEntryType } from 'services/constants';
 import { IDCCGenerationResponse } from 'services/interfaces';
 import ResultValue from './result-value';
 
-interface IResultModalProps {
+interface IGenerationResultModalProps {
   isOpen: boolean;
   onClose(): void;
   generationResult: IDCCGenerationResponse;
 }
 
-const ResultModal: React.FC<IResultModalProps> = ({
+const GenerationResultModal: React.FC<IGenerationResultModalProps> = ({
   isOpen,
   onClose,
   generationResult
@@ -135,4 +135,4 @@ const ResultModal: React.FC<IResultModalProps> = ({
   );
 };
 
-export default ResultModal;
+export default GenerationResultModal;

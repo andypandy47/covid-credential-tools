@@ -7,10 +7,10 @@ import {
   ISecurityClaims,
   ISigningDetails
 } from 'services/interfaces';
-import PersonalDetailsForm from './forms/personal-details-form';
-import SecurityClaimsForm from './forms/security-claims-form';
-import SigningDetailsForm from './forms/signing-details-form';
-import VaccinationDetailsForm from './forms/vaccination-details-form';
+import PersonalDetailsForm from './generation/forms/personal-details-form';
+import SecurityClaimsForm from './generation/forms/security-claims-form';
+import SigningDetailsForm from './generation/forms/signing-details-form';
+import VaccinationDetailsForm from './generation/forms/vaccination-details-form';
 
 interface IVaccinationTabProps {
   onSubmit(

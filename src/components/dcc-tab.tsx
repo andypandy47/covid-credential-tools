@@ -23,7 +23,7 @@ import {
   ISigningDetails
 } from 'services/interfaces';
 import RecoveryTab from 'components/dcc/recovery-tab';
-import ResultModal from 'components/dcc/result-modal';
+import GenerationResultModal from 'components/dcc/generation/generation-result-modal';
 import TestTab from 'components/dcc/test-tab';
 import VaccinationTab from 'components/dcc/vaccination-tab';
 import DecodeTab from './dcc/decode-tab';
@@ -121,7 +121,7 @@ const DCCTab: React.FC = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <ResultModal
+      <GenerationResultModal
         isOpen={isOpen}
         onClose={onClose}
         generationResult={generatedDCC}

@@ -70,7 +70,7 @@ const VaccinationDetailsForm: React.FC<IVaccinationDetailsFormProps> = ({
           type={'text'}
           size={'sm'}
           width={Styles.InputWidth}
-          value={vaccinationDetails.mp}
+          value={vaccinationDetails.ma}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             onFormChange({ ...vaccinationDetails, ma: e.target.value })
           }

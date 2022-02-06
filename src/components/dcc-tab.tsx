@@ -33,6 +33,8 @@ const DCCTab: React.FC = () => {
     {} as IDCCGenerationResponse
   );
 
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleGeneration = async (
@@ -42,6 +44,8 @@ const DCCTab: React.FC = () => {
     payloadDetails: VaccinationEntry | RecoveryEntry | TestEntry,
     dccType: DCCEntryType
   ) => {
+    setIsLoading(true);
+
     const fnTransliterated = icaotransliteration(
       personalDetails.foreName.toUpperCase()
     );
@@ -70,6 +74,7 @@ const DCCTab: React.FC = () => {
       onOpen();
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -108,13 +113,13 @@ const DCCTab: React.FC = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <VaccinationTab onSubmit={handleGeneration} />
+            <VaccinationTab onSubmit={handleGeneration} isLoading={isLoading} />
           </TabPanel>
           <TabPanel>
-            <RecoveryTab onSubmit={handleGeneration} />
+            <RecoveryTab onSubmit={handleGeneration} isLoading={isLoading} />
           </TabPanel>
           <TabPanel>
-            <TestTab onSubmit={handleGeneration} />
+            <TestTab onSubmit={handleGeneration} isLoading={isLoading} />
           </TabPanel>
           <TabPanel>
             <DecodeTab />
@@ -124,6 +129,7 @@ const DCCTab: React.FC = () => {
       <GenerationResultModal
         isOpen={isOpen}
         onClose={onClose}
+        onGenerationComplete={() => setIsLoading(false)}
         generationResult={generatedDCC}
       />
     </>

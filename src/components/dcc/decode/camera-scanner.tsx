@@ -1,13 +1,22 @@
-import * as React from 'react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Button, Flex, Spinner } from '@chakra-ui/react';
 import QrScanner from 'qr-scanner';
+import * as React from 'react';
 
 interface ICameraScannerProps {
   onSuccessfulScan(data: string): void;
+  onClickBack(): void;
 }
 
-const CameraScanner: React.FC<ICameraScannerProps> = ({ onSuccessfulScan }) => {
-  const videoRef =
-    React.useRef<HTMLVideoElement>() as React.MutableRefObject<HTMLVideoElement>;
+const CameraScanner: React.FC<ICameraScannerProps> = ({
+  onSuccessfulScan,
+  onClickBack
+}) => {
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  const videoRef = React.useRef<HTMLVideoElement>({} as HTMLVideoElement);
+
+  const scannerRef = React.useRef<QrScanner>({} as QrScanner);
 
   React.useEffect(() => {
     if (!videoRef) {
@@ -29,10 +38,52 @@ const CameraScanner: React.FC<ICameraScannerProps> = ({ onSuccessfulScan }) => {
       }
     );
 
-    scanner.start();
+    scanner.start().then(() => {
+      scannerRef.current = scanner;
+
+      setIsLoading(false);
+    });
   });
 
-  return <video ref={videoRef}></video>;
+  const handleClickBack = () => {
+    scannerRef.current.stop();
+    onClickBack();
+  };
+
+  return (
+    <Flex
+      flexDirection={'column'}
+      justifyContent={'center'}
+      alignItems={'center'}
+    >
+      {isLoading && (
+        <Spinner
+          thickness={'4px'}
+          speed={'0.65s'}
+          emptyColor={'gray.200'}
+          color={'#005EB8'}
+          size={'xl'}
+        />
+      )}
+
+      <video ref={videoRef}></video>
+
+      {!isLoading && (
+        <>
+          <Flex justifyContent={'flex-end'} width={'full'}>
+            <Button
+              aria-label="back"
+              leftIcon={<ArrowBackIcon />}
+              mt={3}
+              onClick={handleClickBack}
+            >
+              Go Back
+            </Button>
+          </Flex>
+        </>
+      )}
+    </Flex>
+  );
 };
 
 export default CameraScanner;

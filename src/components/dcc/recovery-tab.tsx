@@ -20,9 +20,10 @@ interface IRecoveryTabProps {
     recoveryDetails: RecoveryEntry,
     dccType: DCCEntryType
   ): void;
+  isLoading: boolean;
 }
 
-const RecoveryTab: React.FC<IRecoveryTabProps> = ({ onSubmit }) => {
+const RecoveryTab: React.FC<IRecoveryTabProps> = ({ onSubmit, isLoading }) => {
   const [personalDetails, setPersonalDetails] = React.useState(
     DefaultValues.PersonalDetails
   );
@@ -69,6 +70,8 @@ const RecoveryTab: React.FC<IRecoveryTabProps> = ({ onSubmit }) => {
                   DCCEntryType.Recovery
                 )
               }
+              isLoading={isLoading}
+              loadingText={'Generating'}
             >
               Generate Certificate
             </Button>

@@ -20,9 +20,10 @@ interface ITestTabProps {
     testDetails: TestEntry,
     dccType: DCCEntryType
   ): void;
+  isLoading: boolean;
 }
 
-const TestTab: React.FC<ITestTabProps> = ({ onSubmit }) => {
+const TestTab: React.FC<ITestTabProps> = ({ onSubmit, isLoading }) => {
   const [personalDetails, setPersonalDetails] = React.useState(
     DefaultValues.PersonalDetails
   );
@@ -67,6 +68,8 @@ const TestTab: React.FC<ITestTabProps> = ({ onSubmit }) => {
                   DCCEntryType.Test
                 )
               }
+              isLoading={isLoading}
+              loadingText={'Generating'}
             >
               Generate Certificate
             </Button>

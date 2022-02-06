@@ -21,12 +21,14 @@ import ResultValue from './result-value';
 interface IGenerationResultModalProps {
   isOpen: boolean;
   onClose(): void;
+  onGenerationComplete(): void;
   generationResult: IDCCGenerationResponse;
 }
 
 const GenerationResultModal: React.FC<IGenerationResultModalProps> = ({
   isOpen,
   onClose,
+  onGenerationComplete,
   generationResult
 }) => {
   const [canvas, setCanvas] = React.useState<HTMLCanvasElement>(
@@ -69,6 +71,8 @@ const GenerationResultModal: React.FC<IGenerationResultModalProps> = ({
           }
         }
       );
+
+      onGenerationComplete();
     }
   }, [canvas]);
 

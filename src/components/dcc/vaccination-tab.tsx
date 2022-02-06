@@ -20,9 +20,13 @@ interface IVaccinationTabProps {
     vaccinationDetails: VaccinationEntry,
     dccType: DCCEntryType
   ): void;
+  isLoading: boolean;
 }
 
-const VaccinationTab: React.FC<IVaccinationTabProps> = ({ onSubmit }) => {
+const VaccinationTab: React.FC<IVaccinationTabProps> = ({
+  onSubmit,
+  isLoading
+}) => {
   const [personalDetails, setPersonalDetails] = React.useState(
     DefaultValues.PersonalDetails
   );
@@ -69,6 +73,8 @@ const VaccinationTab: React.FC<IVaccinationTabProps> = ({ onSubmit }) => {
                   DCCEntryType.Vaccination
                 )
               }
+              isLoading={isLoading}
+              loadingText={'Generating'}
             >
               Generate Certificate
             </Button>

@@ -66,7 +66,7 @@ const FileUpload: React.FC<IFileUploadProps> = ({
 
   const dropText = isDragActive
     ? 'Drop file here ...'
-    : 'Click to upload a file / Drag and drop';
+    : 'Upload a file / Drag and drop';
 
   return (
     <Flex

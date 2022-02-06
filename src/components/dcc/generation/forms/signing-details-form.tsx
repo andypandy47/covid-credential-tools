@@ -6,7 +6,7 @@ import {
   Textarea
 } from '@chakra-ui/react';
 import * as React from 'react';
-import { ISigningDetails } from 'services/interfaces';
+import { ISigningDetails } from 'services/dcc/interfaces';
 
 interface ISigningDetailsFormProps {
   signingDetails: ISigningDetails;

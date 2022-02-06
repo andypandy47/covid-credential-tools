@@ -16,7 +16,7 @@ import { EUDCC } from './dcc-combined-schema';
 import {
   IDCCGenerationResponse,
   ISecurityClaims,
-  ISigner,
+  IKey,
   ISigningDetails
 } from './interfaces';
 
@@ -60,13 +60,13 @@ const getSigningAlgorithm = async (dscPem: string): Promise<string> => {
 const getPrivateKeySigner = (
   privateKeyPem: string,
   signingAlgorithm: string
-): ISigner => {
+): IKey => {
   if (supportedAlgorithms.includes(signingAlgorithm)) {
-    const privateECKey = new ecKey(privateKeyPem);
+    const { d } = new ecKey(privateKeyPem);
 
     return {
       key: {
-        d: Buffer.from(privateECKey.d)
+        d: Buffer.from(d)
       }
     };
   }

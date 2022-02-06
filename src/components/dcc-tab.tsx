@@ -8,31 +8,31 @@ import {
   useDisclosure
 } from '@chakra-ui/react';
 import icaotransliteration from 'icao-transliteration';
-import { DCCEntryType, DCCValues, Styles } from 'services/constants';
+import RecoveryTab from 'components/dcc/generation/recovery-tab';
+import GenerationResultModal from 'components/dcc/generation/generation-result-modal';
+import TestTab from 'components/dcc/generation/test-tab';
+import VaccinationTab from 'components/dcc/generation/vaccination-tab';
+import DecodeTab from './dcc/decode/decode-tab';
+import { Styles } from 'services/constants';
+import { DCCEntryType, DCCValues } from 'services/dcc/constants';
 import {
-  EUDCC,
+  VaccinationEntry,
   RecoveryEntry,
   TestEntry,
-  VaccinationEntry
-} from 'services/dcc-combined-schema';
-import { generateDCC } from 'services/dcc-generation-service';
+  EUDCC
+} from 'services/dcc/dcc-combined-schema';
+import { generateDCC } from 'services/dcc/dcc-generation-service';
 import {
   IDCCGenerationResponse,
   IPersonalDetails,
   ISecurityClaims,
   ISigningDetails
-} from 'services/interfaces';
-import RecoveryTab from 'components/dcc/recovery-tab';
-import GenerationResultModal from 'components/dcc/generation/generation-result-modal';
-import TestTab from 'components/dcc/test-tab';
-import VaccinationTab from 'components/dcc/vaccination-tab';
-import DecodeTab from './dcc/decode-tab';
+} from 'services/dcc/interfaces';
 
 const DCCTab: React.FC = () => {
   const [generatedDCC, setGeneratedDCC] = React.useState(
     {} as IDCCGenerationResponse
   );
-
   const [isLoading, setIsLoading] = React.useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();

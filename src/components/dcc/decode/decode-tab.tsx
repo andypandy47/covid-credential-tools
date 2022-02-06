@@ -6,13 +6,15 @@ import {
   FormLabel,
   Icon,
   Text,
-  Textarea
+  Textarea,
+  useDisclosure
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { FiCamera } from 'react-icons/fi';
-import { DefaultValues } from 'services/constants';
-import CameraScanner from './decode/camera-scanner';
-import FileUpload from './decode/file-upload';
+import { DefaultValues } from 'services/dcc/constants';
+import CameraScanner from './camera-scanner';
+import DecodeResultModal from './decode-result-modal';
+import FileUpload from './file-upload';
 
 enum DecodeState {
   None = 0,
@@ -27,12 +29,14 @@ const DecodeTab: React.FC = () => {
   const [decodeState, setDecodeState] = React.useState(DecodeState.None);
   const [data, setData] = React.useState('');
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const handleSuccessfulQRRead = (data: string) => {
     console.log(data);
     setData(data);
-    setDecodeState(DecodeState.ShowResult);
+    setDecodeState(DecodeState.None);
 
-    
+    onOpen();
   };
 
   return (
@@ -75,8 +79,6 @@ const DecodeTab: React.FC = () => {
         />
       )}
 
-      {decodeState === DecodeState.ShowResult && <Text>{data}</Text>}
-
       <Divider mt={3} />
       <FormControl width={'50%'} mt={3}>
         <FormLabel>Public Key</FormLabel>
@@ -88,6 +90,13 @@ const DecodeTab: React.FC = () => {
           }
         />
       </FormControl>
+
+      <DecodeResultModal
+        isOpen={isOpen}
+        onClose={onClose}
+        qrData={data}
+        publicKeyPem={publicKey}
+      />
     </>
   );
 };

@@ -1,40 +1,38 @@
-import * as React from 'react';
 import { Button, Flex, Stack } from '@chakra-ui/react';
-import { DCCEntryType, DefaultValues, Styles } from 'services/constants';
-import { VaccinationEntry } from 'services/dcc-combined-schema';
+import * as React from 'react';
+import { Styles } from 'services/constants';
+import { DCCEntryType, DefaultValues } from 'services/dcc/constants';
+import { RecoveryEntry } from 'services/dcc/dcc-combined-schema';
 import {
   IPersonalDetails,
   ISecurityClaims,
   ISigningDetails
-} from 'services/interfaces';
-import PersonalDetailsForm from './generation/forms/personal-details-form';
-import SecurityClaimsForm from './generation/forms/security-claims-form';
-import SigningDetailsForm from './generation/forms/signing-details-form';
-import VaccinationDetailsForm from './generation/forms/vaccination-details-form';
+} from 'services/dcc/interfaces';
+import PersonalDetailsForm from './forms/personal-details-form';
+import RecoveryDetailsForm from './forms/recovery-details-form';
+import SecurityClaimsForm from './forms/security-claims-form';
+import SigningDetailsForm from './forms/signing-details-form';
 
-interface IVaccinationTabProps {
+interface IRecoveryTabProps {
   onSubmit(
     personalDetails: IPersonalDetails,
     securityClaims: ISecurityClaims,
     signingDetails: ISigningDetails,
-    vaccinationDetails: VaccinationEntry,
+    recoveryDetails: RecoveryEntry,
     dccType: DCCEntryType
   ): void;
   isLoading: boolean;
 }
 
-const VaccinationTab: React.FC<IVaccinationTabProps> = ({
-  onSubmit,
-  isLoading
-}) => {
+const RecoveryTab: React.FC<IRecoveryTabProps> = ({ onSubmit, isLoading }) => {
   const [personalDetails, setPersonalDetails] = React.useState(
     DefaultValues.PersonalDetails
   );
   const [securityClaims, setSecurityClaims] = React.useState(
     DefaultValues.SecurityClaims
   );
-  const [vaccinationDetails, setVaccinationDetails] = React.useState(
-    DefaultValues.VaccinationEntry
+  const [recoveryDetails, setRecoveryDetails] = React.useState(
+    DefaultValues.RecoveryEntry
   );
   const [signingDetails, setSigningDetails] = React.useState(
     DefaultValues.SigningDetails
@@ -42,9 +40,9 @@ const VaccinationTab: React.FC<IVaccinationTabProps> = ({
 
   return (
     <Flex direction={'row'} mt={5} justifyContent={'space-between'}>
-      <VaccinationDetailsForm
-        vaccinationDetails={vaccinationDetails}
-        onFormChange={setVaccinationDetails}
+      <RecoveryDetailsForm
+        recoveryDetails={recoveryDetails}
+        onFormChange={setRecoveryDetails}
       />
       <Flex direction={'column'} justifyContent={'space-between'}>
         <Stack direction={'column'} spacing={6}>
@@ -69,8 +67,8 @@ const VaccinationTab: React.FC<IVaccinationTabProps> = ({
                   personalDetails,
                   securityClaims,
                   signingDetails,
-                  vaccinationDetails,
-                  DCCEntryType.Vaccination
+                  recoveryDetails,
+                  DCCEntryType.Recovery
                 )
               }
               isLoading={isLoading}
@@ -85,4 +83,4 @@ const VaccinationTab: React.FC<IVaccinationTabProps> = ({
   );
 };
 
-export default VaccinationTab;
+export default RecoveryTab;

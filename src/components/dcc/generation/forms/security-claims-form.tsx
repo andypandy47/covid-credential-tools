@@ -6,7 +6,7 @@ import {
   Stack
 } from '@chakra-ui/react';
 import * as React from 'react';
-import { ISecurityClaims } from 'services/interfaces';
+import { ISecurityClaims } from 'services/dcc/interfaces';
 
 interface ISecurityClaimsFormProps {
   inputWidth: string;

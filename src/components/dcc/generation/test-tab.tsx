@@ -7,7 +7,7 @@ import {
   IPersonalDetails,
   ISecurityClaims,
   ISigningDetails
-} from 'services/dcc/interfaces';
+} from 'services/dcc/dcc-interfaces';
 import PersonalDetailsForm from './forms/personal-details-form';
 import SecurityClaimsForm from './forms/security-claims-form';
 import SigningDetailsForm from './forms/signing-details-form';

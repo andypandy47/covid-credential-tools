@@ -5,7 +5,6 @@ import {
   Heading,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalOverlay,
@@ -15,7 +14,7 @@ import {
 import { toCanvas } from 'qrcode';
 import * as React from 'react';
 import { DCCEntryType } from 'services/dcc/constants';
-import { IDCCGenerationResponse } from 'services/dcc/interfaces';
+import { IDCCGenerationResponse } from 'services/dcc/dcc-interfaces';
 import ResultValue from './result-value';
 
 interface IGenerationResultModalProps {
@@ -81,7 +80,6 @@ const GenerationResultModal: React.FC<IGenerationResultModalProps> = ({
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent maxWidth={'1100px'}>
-          <ModalCloseButton />
           <ModalBody
             display={'flex'}
             flexDirection={'row'}

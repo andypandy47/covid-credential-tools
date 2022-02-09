@@ -63,11 +63,7 @@ const DecodeTab: React.FC = () => {
           <Text fontSize={'xl'}>OR</Text>
           <FileUpload
             onFileAccepted={handleSuccessfulQRRead}
-            setIsProcessing={(isProcessing) =>
-              isProcessing
-                ? setDecodeState(DecodeState.Processing)
-                : setDecodeState(DecodeState.None)
-            }
+            setIsProcessing={() => setDecodeState(DecodeState.None)}
           />
         </Flex>
       )}

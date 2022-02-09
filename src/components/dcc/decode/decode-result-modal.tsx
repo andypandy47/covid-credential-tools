@@ -1,21 +1,23 @@
 import {
+  Button,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
-  Input,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalOverlay,
-  Stack
+  Stack,
+  Text
 } from '@chakra-ui/react';
+import dayjs from 'dayjs';
 import * as React from 'react';
 import { DefaultValues } from 'services/dcc/constants';
+import { EUDCC } from 'services/dcc/dcc-combined-schema';
+import { IValidationContext } from 'services/dcc/dcc-interfaces';
 import { validateDCC } from 'services/dcc/dcc-validation-service';
-import { IValidationContext } from 'services/dcc/interfaces';
+import PayloadDisplay from './payload-display';
+import ValidationStep from './validation-step';
 
 interface IDecodeResultModalProps {
   isOpen: boolean;
@@ -49,71 +51,96 @@ const DecodeResultModal: React.FC<IDecodeResultModalProps> = ({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+        scrollBehavior={'inside'}
+      >
         <ModalOverlay />
         <ModalContent maxWidth={'1100px'}>
-          <ModalCloseButton />
-          <ModalBody
-            display={'flex'}
-            flexDirection={'row'}
-            alignItems={'center'}
+          <Heading
+            as={'h3'}
+            size={'lg'}
+            py={2}
+            px={6}
+            borderBottom={'1px'}
+            borderBottomColor={'gray.100'}
           >
-            <Flex flex={1} flexDirection={'column'}>
-              <Heading as={'h3'} size={'lg'} mb={3}>
-                Decode Result
-              </Heading>
-              <Stack>
-                <FormControl>
-                  <FormLabel>Key Id</FormLabel>
-                  <Input
-                    type={'text'}
-                    isReadOnly
-                    size={'sm'}
-                    value={validationContext.decodedCose?.keyIdentifier}
+            Decode Result
+          </Heading>
+          <ModalBody display={'flex'} flexDirection={'column'}>
+            <Flex flexDirection={'row'}>
+              <Flex flex={1} flexDirection={'column'} p={2}>
+                <Stack>
+                  <Flex>
+                    <Text fontWeight={'bold'}>Key Id: </Text>
+                    <Text ml={2}>
+                      {validationContext.decodedCose?.keyIdentifier ?? ''}
+                    </Text>
+                  </Flex>
+                  <Flex>
+                    <Text fontWeight={'bold'}>Issuer: </Text>
+                    <Text ml={2}>
+                      {validationContext.decodedCose?.issuer ?? ''}
+                    </Text>
+                  </Flex>
+                  <Flex>
+                    <Text fontWeight={'bold'}>Issuing Date: </Text>
+                    <Text ml={2}>
+                      {dayjs
+                        .unix(
+                          validationContext.decodedCose?.notValidBefore ?? 0
+                        )
+                        .format() ?? ''}
+                    </Text>
+                  </Flex>
+                  <Flex>
+                    <Text fontWeight={'bold'}>Expiry Date: </Text>
+                    <Text ml={2}>
+                      {dayjs
+                        .unix(validationContext.decodedCose?.expiry ?? 0)
+                        .format() ?? ''}
+                    </Text>
+                  </Flex>
+                  <PayloadDisplay
+                    payload={
+                      validationContext.decodedCose?.hcert ?? ({} as EUDCC)
+                    }
                   />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Issuer</FormLabel>
-                  <Input
-                    type={'text'}
-                    isReadOnly
-                    size={'sm'}
-                    value={validationContext.decodedCose?.issuer}
+                </Stack>
+              </Flex>
+              <Flex flex={1} flexDirection={'column'} p={2}>
+                <Text fontWeight={'bold'} mb={2}>
+                  Validation:
+                </Text>
+                <Stack spacing={1}>
+                  <ValidationStep
+                    validationStep={validationContext.contextIdentifier}
                   />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Issuing Date</FormLabel>
-                  <Input
-                    type={'text'}
-                    isReadOnly
-                    size={'sm'}
-                    value={validationContext.decodedCose?.notValidBefore}
+                  <ValidationStep
+                    validationStep={validationContext.issuingDate}
                   />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Expiry Date</FormLabel>
-                  <Input
-                    type={'text'}
-                    isReadOnly
-                    size={'sm'}
-                    value={validationContext.decodedCose?.expiry}
+                  <ValidationStep
+                    validationStep={validationContext.expiryDate}
                   />
-                </FormControl>
-                {/* <CodeBlock
-                  text={JSON.stringify(validationContext.decodedCose?.hcert)}
-                  language={'javascript'}
-                  showLineNumbers={true}
-                  theme={dracula}
-                /> */}
-              </Stack>
+                  <ValidationStep
+                    validationStep={validationContext.signautre}
+                  />
+                </Stack>
+              </Flex>
             </Flex>
-            <Flex flex={1}></Flex>
           </ModalBody>
 
           <ModalFooter
             display={'flex'}
-            justifyContent={'space-between'}
-          ></ModalFooter>
+            justifyContent={'flex-end'}
+            alignItems={'flex-end'}
+          >
+            <Button colorScheme="blue" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

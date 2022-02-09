@@ -9,7 +9,7 @@ import {
   ISecurityClaims,
   ISigningDetails,
   IValidationContext
-} from './interfaces';
+} from './dcc-interfaces';
 
 export class DCCValues {
   public static readonly NAATValue = 'LP6464-4';

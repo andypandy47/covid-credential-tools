@@ -11,14 +11,14 @@ import sha256 from 'sha256';
 import {
   supportedAlgorithms,
   x509AlgorithmsToCOSEAlgortihms
-} from './constants';
+} from '../constants';
 import { EUDCC } from './dcc-combined-schema';
+import { IKey } from '../crypto-interfaces';
 import {
   IDCCGenerationResponse,
   ISecurityClaims,
-  IKey,
   ISigningDetails
-} from './interfaces';
+} from './dcc-interfaces';
 
 const certPrefix = '-----BEGIN CERTIFICATE-----\n';
 const certPostfix = '-----END CERTIFICATE-----';

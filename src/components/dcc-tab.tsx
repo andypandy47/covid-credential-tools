@@ -27,7 +27,7 @@ import {
   IPersonalDetails,
   ISecurityClaims,
   ISigningDetails
-} from 'services/dcc/interfaces';
+} from 'services/dcc/dcc-interfaces';
 
 const DCCTab: React.FC = () => {
   const [generatedDCC, setGeneratedDCC] = React.useState(

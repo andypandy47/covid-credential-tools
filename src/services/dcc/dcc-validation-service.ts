@@ -3,10 +3,10 @@ import zlib from 'browserify-zlib';
 import cose from 'cose-js';
 import dayjs from 'dayjs';
 import ecKey from 'ec-key';
-import { IKey } from '../interfaces';
+import { IKey } from '../crypto-interfaces';
 import { DCCValues, DefaultValues, ValidationStepState } from './constants';
 import { CoseSign1_Object } from './Cose/CoseSign1_Object';
-import { IValidationContext } from './interfaces';
+import { IValidationContext } from './dcc-interfaces';
 
 export const validateDCC = async (
   data: string,

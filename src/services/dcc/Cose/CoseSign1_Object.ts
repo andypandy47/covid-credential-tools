@@ -22,7 +22,10 @@ export class CoseSign1_Object {
     }
 
     this.protectedAttributes = cbor.decode(decodedCose.value[0] as Uint8Array);
-    this.unprotectedAttributes = decodedCose.value[1];
+    this.unprotectedAttributes = decodedCose.value[1] as Map<
+      number,
+      number | Uint8Array
+    >;
     this.content = cbor.decode(decodedCose.value[2] as Uint8Array);
     this.signature = decodedCose.value[3] as Uint8Array;
   }
@@ -31,7 +34,7 @@ export class CoseSign1_Object {
 
   public protectedAttributes: Map<number, number | Uint8Array>;
 
-  public unprotectedAttributes: unknown = {};
+  public unprotectedAttributes: Map<number, number | Uint8Array>;
 
   public content: Map<number, number | string | Map<number, EUDCC>>;
 
@@ -42,11 +45,18 @@ export class CoseSign1_Object {
   }
 
   public get keyIdentifier(): string {
-    const kid = this.protectedAttributes.get(
+    const protectedKid = this.protectedAttributes?.get?.(
       HeaderParameterKey.KID
     ) as Uint8Array;
 
+    const unprotectedKid = this.unprotectedAttributes?.get?.(
+      HeaderParameterKey.KID
+    ) as Uint8Array;
+
+    const kid = protectedKid ?? unprotectedKid;
+
     if (kid === undefined) {
+      console.error('Key Id is undefined!');
       return '';
     }
 

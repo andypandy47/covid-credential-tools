@@ -22,6 +22,11 @@ export const validateDCC = async (
       state: ValidationStepState.Failed,
       message: `'${contextIdentifier}' is not a valid context identifier`
     };
+  } else {
+    validationContext.contextIdentifier = {
+      ...validationContext.contextIdentifier,
+      state: ValidationStepState.Passed
+    };
   }
 
   const base45Data = data.replace(DCCValues.HcertContextIdentifier, '');
@@ -81,15 +86,21 @@ export const validateDCC = async (
       state: ValidationStepState.Passed
     };
   } catch (err) {
+    let message = 'Could not be verified';
+
+    if (err instanceof Error) {
+      message = err.message;
+    }
+
     validationContext.signautre = {
       ...validationContext.signautre,
       state: ValidationStepState.Failed,
-      message: `Signature could not be verified`
+      message
     };
   }
 
   return {
     ...validationContext,
-    decodedCose: decodedCose
+    decodedCose
   };
 };

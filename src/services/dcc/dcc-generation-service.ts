@@ -126,6 +126,6 @@ export const generateDCC = async (
   return {
     signedHcert: prefixed,
     kid: Buffer.from(kid).toString('base64'),
-    publicKeyPem: publicKeyPem
+    publicKeyPem
   } as IDCCGenerationResponse;
 };

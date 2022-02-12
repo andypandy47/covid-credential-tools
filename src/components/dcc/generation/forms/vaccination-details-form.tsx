@@ -11,8 +11,8 @@ import {
   Stack
 } from '@chakra-ui/react';
 import * as React from 'react';
-import { Styles } from '../services/constants';
-import { VaccinationEntry } from '../services/dcc-combined-schema';
+import { Styles } from 'services/constants';
+import { VaccinationEntry } from 'services/dcc/dcc-combined-schema';
 
 interface IVaccinationDetailsFormProps {
   vaccinationDetails: VaccinationEntry;

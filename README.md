@@ -5,7 +5,7 @@ Allows users to generate, read and verify Covid Credentials as defined by variou
 **Features**
 
 - [x] EU DCC schema ver 1.3.0 Gen
-- [ ] EU DCC Read
+- [x] EU DCC Read and Validate
 - [ ] Smart Health Cards Gen
 - [ ] Smart Health Cards Read
 - [ ] ICAO VDS-NC Gen

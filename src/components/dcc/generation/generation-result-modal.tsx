@@ -5,7 +5,6 @@ import {
   Heading,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalOverlay,
@@ -14,19 +13,21 @@ import {
 } from '@chakra-ui/react';
 import { toCanvas } from 'qrcode';
 import * as React from 'react';
-import { DCCEntryType } from '../services/constants';
-import { IDCCGenerationResponse } from '../services/interfaces';
+import { DCCEntryType } from 'services/dcc/constants';
+import { IDCCGenerationResponse } from 'services/dcc/dcc-interfaces';
 import ResultValue from './result-value';
 
-interface IResultModalProps {
+interface IGenerationResultModalProps {
   isOpen: boolean;
   onClose(): void;
+  onGenerationComplete(): void;
   generationResult: IDCCGenerationResponse;
 }
 
-const ResultModal: React.FC<IResultModalProps> = ({
+const GenerationResultModal: React.FC<IGenerationResultModalProps> = ({
   isOpen,
   onClose,
+  onGenerationComplete,
   generationResult
 }) => {
   const [canvas, setCanvas] = React.useState<HTMLCanvasElement>(
@@ -69,6 +70,8 @@ const ResultModal: React.FC<IResultModalProps> = ({
           }
         }
       );
+
+      onGenerationComplete();
     }
   }, [canvas]);
 
@@ -77,7 +80,6 @@ const ResultModal: React.FC<IResultModalProps> = ({
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent maxWidth={'1100px'}>
-          <ModalCloseButton />
           <ModalBody
             display={'flex'}
             flexDirection={'row'}
@@ -135,4 +137,4 @@ const ResultModal: React.FC<IResultModalProps> = ({
   );
 };
 
-export default ResultModal;
+export default GenerationResultModal;

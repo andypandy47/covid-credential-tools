@@ -68,20 +68,16 @@ const CameraScanner: React.FC<ICameraScannerProps> = ({
 
       <video ref={videoRef}></video>
 
-      {!isLoading && (
-        <>
-          <Flex justifyContent={'flex-end'} width={'full'}>
-            <Button
-              aria-label="back"
-              leftIcon={<ArrowBackIcon />}
-              mt={3}
-              onClick={handleClickBack}
-            >
-              Go Back
-            </Button>
-          </Flex>
-        </>
-      )}
+      <Flex justifyContent={'flex-end'} width={'full'}>
+        <Button
+          aria-label="back"
+          leftIcon={<ArrowBackIcon />}
+          mt={3}
+          onClick={handleClickBack}
+        >
+          Go Back
+        </Button>
+      </Flex>
     </Flex>
   );
 };

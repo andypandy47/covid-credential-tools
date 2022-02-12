@@ -32,7 +32,6 @@ const DecodeTab: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSuccessfulQRRead = (data: string) => {
-    console.log(data);
     setData(data);
     setDecodeState(DecodeState.None);
 

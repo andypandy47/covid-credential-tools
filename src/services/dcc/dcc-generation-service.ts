@@ -12,13 +12,21 @@ import {
   supportedAlgorithms,
   x509AlgorithmsToCOSEAlgortihms
 } from '../constants';
-import { EUDCC } from './dcc-combined-schema';
+import {
+  EUDCC,
+  RecoveryEntry,
+  TestEntry,
+  VaccinationEntry
+} from './dcc-combined-schema';
 import { IKey } from '../crypto-interfaces';
 import {
   IDCCGenerationResponse,
+  IPersonalDetails,
   ISecurityClaims,
   ISigningDetails
 } from './dcc-interfaces';
+import { DCCEntryType, DCCValues } from './constants';
+import icaotransliteration from 'icao-transliteration';
 
 const certPrefix = '-----BEGIN CERTIFICATE-----\n';
 const certPostfix = '-----END CERTIFICATE-----';
@@ -74,16 +82,61 @@ const getPrivateKeySigner = (
   throw new Error(`Unsupported signing algorithm: ${signingAlgorithm}`);
 };
 
+const getPayloadDetails = (
+  dccType: DCCEntryType,
+  payloadDetails: VaccinationEntry | RecoveryEntry | TestEntry
+): EUDCC => {
+  switch (dccType) {
+    case DCCEntryType.Vaccination:
+      return { v: [payloadDetails as VaccinationEntry] };
+    case DCCEntryType.Recovery:
+      return { r: [payloadDetails as RecoveryEntry] };
+    case DCCEntryType.Test:
+      const testEntry = { ...payloadDetails } as TestEntry;
+
+      if (testEntry.tt === DCCValues.NAATValue) {
+        delete testEntry.ma;
+      } else {
+        delete testEntry.nm;
+      }
+
+      return { t: [testEntry] };
+    default:
+      throw new Error('DCC Type not set');
+  }
+};
+
 export const generateDCC = async (
-  eudccPayload: EUDCC,
+  personalDetails: IPersonalDetails,
   securityClaims: ISecurityClaims,
-  signingDetails: ISigningDetails
+  signingDetails: ISigningDetails,
+  payloadDetails: VaccinationEntry | RecoveryEntry | TestEntry,
+  dccType: DCCEntryType
 ): Promise<IDCCGenerationResponse> => {
   const expEpoch = dayjs(securityClaims.expiry).unix();
   const iatEpoch = dayjs(securityClaims.issuingDate).unix();
 
+  const fnTransliterated = icaotransliteration(
+    personalDetails.foreName.toUpperCase()
+  );
+  const gnTransliterated = icaotransliteration(
+    personalDetails.givenName.toUpperCase()
+  );
+
+  const dccPayload: EUDCC = {
+    ...getPayloadDetails(dccType, payloadDetails),
+    ver: '1.3.0',
+    nam: {
+      gn: personalDetails.givenName,
+      gnt: gnTransliterated,
+      fnt: fnTransliterated
+    },
+    fn: personalDetails.foreName,
+    dob: personalDetails.dob
+  };
+
   const hcert = new Map();
-  hcert.set(1, eudccPayload);
+  hcert.set(1, dccPayload);
 
   const fullPayloadMap = new Map();
   fullPayloadMap.set(CWT_ISSUER, securityClaims.issuerCountry);
@@ -129,3 +182,59 @@ export const generateDCC = async (
     publicKeyPem
   } as IDCCGenerationResponse;
 };
+
+// export const generateDCC = async (
+//   eudccPayload: EUDCC,
+//   securityClaims: ISecurityClaims,
+//   signingDetails: ISigningDetails
+// ): Promise<IDCCGenerationResponse> => {
+//   const expEpoch = dayjs(securityClaims.expiry).unix();
+//   const iatEpoch = dayjs(securityClaims.issuingDate).unix();
+
+//   const hcert = new Map();
+//   hcert.set(1, eudccPayload);
+
+//   const fullPayloadMap = new Map();
+//   fullPayloadMap.set(CWT_ISSUER, securityClaims.issuerCountry);
+//   fullPayloadMap.set(CWT_EXP, expEpoch);
+//   fullPayloadMap.set(CWT_IAT, iatEpoch);
+//   fullPayloadMap.set(CWT_HCERT, hcert);
+
+//   const cborPayload = cbor.encode(fullPayloadMap);
+
+//   const publicKeyPem = await getPublicKeyPem(signingDetails.dscPem);
+
+//   const kid = extractKid(signingDetails.dscPem);
+//   const signingAlgorithm = await getSigningAlgorithm(signingDetails.dscPem);
+
+//   const privateKeySigner = getPrivateKeySigner(
+//     signingDetails.privateKeyPem,
+//     signingAlgorithm
+//   );
+
+//   const headers = {
+//     p: {
+//       alg: signingAlgorithm,
+//       kid: kid
+//     },
+//     u: {}
+//   };
+
+//   const signedCose = (await cose.sign.create(
+//     headers,
+//     cborPayload,
+//     privateKeySigner
+//   )) as Buffer;
+
+//   const zippedCose = zlib.deflateSync(signedCose);
+
+//   const base45Encoded = base45.encode(zippedCose);
+
+//   const prefixed = `${hcertContextIdentifier}${base45Encoded}`;
+
+//   return {
+//     signedHcert: prefixed,
+//     kid: Buffer.from(kid).toString('base64'),
+//     publicKeyPem
+//   } as IDCCGenerationResponse;
+// };

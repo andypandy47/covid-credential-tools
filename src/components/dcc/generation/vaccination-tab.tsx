@@ -1,33 +1,16 @@
+import { Button, Flex, Stack, useDisclosure } from '@chakra-ui/react';
 import * as React from 'react';
-import { Button, Flex, Stack } from '@chakra-ui/react';
 import { Styles } from 'services/constants';
-import { VaccinationEntry } from 'services/dcc/dcc-combined-schema';
-import {
-  IPersonalDetails,
-  ISecurityClaims,
-  ISigningDetails
-} from 'services/dcc/dcc-interfaces';
+import { DCCEntryType, DefaultValues } from 'services/dcc/constants';
+import { generateDCC } from 'services/dcc/dcc-generation-service';
+import { IDCCGenerationResponse } from 'services/dcc/dcc-interfaces';
 import PersonalDetailsForm from './forms/personal-details-form';
 import SecurityClaimsForm from './forms/security-claims-form';
 import SigningDetailsForm from './forms/signing-details-form';
 import VaccinationDetailsForm from './forms/vaccination-details-form';
-import { DCCEntryType, DefaultValues } from 'services/dcc/constants';
+import GenerationResultModal from './generation-result-modal';
 
-interface IVaccinationTabProps {
-  onSubmit(
-    personalDetails: IPersonalDetails,
-    securityClaims: ISecurityClaims,
-    signingDetails: ISigningDetails,
-    vaccinationDetails: VaccinationEntry,
-    dccType: DCCEntryType
-  ): void;
-  isLoading: boolean;
-}
-
-const VaccinationTab: React.FC<IVaccinationTabProps> = ({
-  onSubmit,
-  isLoading
-}) => {
+const VaccinationTab: React.FC = () => {
   const [personalDetails, setPersonalDetails] = React.useState(
     DefaultValues.PersonalDetails
   );
@@ -40,6 +23,38 @@ const VaccinationTab: React.FC<IVaccinationTabProps> = ({
   const [signingDetails, setSigningDetails] = React.useState(
     DefaultValues.SigningDetails
   );
+
+  const [generatedDCC, setGeneratedDCC] = React.useState(
+    {} as IDCCGenerationResponse
+  );
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+
+    const dccType = DCCEntryType.Vaccination;
+
+    try {
+      const generatedDCC = await generateDCC(
+        personalDetails,
+        securityClaims,
+        signingDetails,
+        vaccinationDetails,
+        dccType
+      );
+
+      setTimeout(() => {
+        setGeneratedDCC({ ...generatedDCC, dccType });
+        onOpen();
+        setIsLoading(false);
+      }, 500);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Flex direction={'row'} mt={5} justifyContent={'space-between'}>
@@ -65,15 +80,7 @@ const VaccinationTab: React.FC<IVaccinationTabProps> = ({
           />
           <Flex justifyContent={'flex-end'}>
             <Button
-              onClick={() =>
-                onSubmit(
-                  personalDetails,
-                  securityClaims,
-                  signingDetails,
-                  vaccinationDetails,
-                  DCCEntryType.Vaccination
-                )
-              }
+              onClick={handleSubmit}
               isLoading={isLoading}
               loadingText={'Generating'}
             >
@@ -82,6 +89,12 @@ const VaccinationTab: React.FC<IVaccinationTabProps> = ({
           </Flex>
         </Stack>
       </Flex>
+      <GenerationResultModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onGenerationComplete={() => setIsLoading(false)}
+        generationResult={generatedDCC}
+      />
     </Flex>
   );
 };

@@ -3,14 +3,36 @@ import zlib from 'browserify-zlib';
 import cose from 'cose-js';
 import dayjs from 'dayjs';
 import ecKey from 'ec-key';
-import { IKey } from '../crypto-interfaces';
-import { DCCValues, DefaultValues, ValidationStepState } from './constants';
+import { IKey, INationalBackendKeysByEnvironment } from '../crypto-interfaces';
+import {
+  DCCValues,
+  DefaultValues,
+  ValidationStepState,
+  ValidationType
+} from './constants';
 import { CoseSign1_Object } from './Cose/CoseSign1_Object';
 import { IValidationContext } from './dcc-interfaces';
 
+const formatSpkiAsPem = (spki: string): string => {
+  if (!spki) {
+    return '';
+  }
+
+  const publicKeyPrefix = '-----BEGIN PUBLIC KEY-----\n';
+  const publicKeyPostfix = '-----END PUBLIC KEY-----';
+
+  const publicKeyPEM = `${publicKeyPrefix}${spki
+    .match(/.{0,64}/g)
+    .join('\n')}${publicKeyPostfix}`;
+
+  return publicKeyPEM;
+};
+
 export const validateDCC = async (
   data: string,
-  publicKeyPem: string
+  nationalBackendKeys: INationalBackendKeysByEnvironment,
+  publicKeyPem: string,
+  validationType: ValidationType
 ): Promise<IValidationContext> => {
   const validationContext = DefaultValues.ValidationContext;
 
@@ -35,11 +57,25 @@ export const validateDCC = async (
 
   const signedCose = zlib.inflateSync(Buffer.from(compressedData));
 
-  const decodedCose = CoseSign1_Object.decode(signedCose);
+  let decodedCose = {} as CoseSign1_Object;
 
-  const issuingDate = dayjs.unix(decodedCose.notValidBefore);
+  try {
+    decodedCose = CoseSign1_Object.decode(signedCose);
 
-  if (issuingDate > dayjs()) {
+    validationContext.coseData = {
+      ...validationContext.coseData,
+      state: ValidationStepState.Passed
+    };
+  } catch (err) {
+    validationContext.coseData = {
+      ...validationContext.coseData,
+      state: ValidationStepState.Failed
+    };
+  }
+
+  const issuingDate = dayjs.unix(decodedCose?.notValidBefore);
+
+  if (issuingDate && issuingDate > dayjs()) {
     validationContext.issuingDate = {
       ...validationContext.issuingDate,
       state: ValidationStepState.Failed,
@@ -54,9 +90,9 @@ export const validateDCC = async (
     };
   }
 
-  const expiryDate = dayjs.unix(decodedCose.expiry);
+  const expiryDate = dayjs.unix(decodedCose?.expiry);
 
-  if (expiryDate < dayjs()) {
+  if (expiryDate && expiryDate < dayjs()) {
     validationContext.expiryDate = {
       ...validationContext.expiryDate,
       state: ValidationStepState.Failed,
@@ -69,22 +105,42 @@ export const validateDCC = async (
     };
   }
 
-  const { x, y } = new ecKey(publicKeyPem);
-
-  const verifier: IKey = {
-    key: {
-      x: Buffer.from(x),
-      y: Buffer.from(y)
-    }
-  };
-
   try {
-    await cose.sign.verify(signedCose, verifier);
+    switch (validationType) {
+      case ValidationType.PublicKey: {
+        const verifier = getVerifierFromPem(publicKeyPem);
 
-    validationContext.signautre = {
-      ...validationContext.signautre,
-      state: ValidationStepState.Passed
-    };
+        await cose.sign.verify(signedCose, verifier);
+
+        validationContext.signautre = {
+          ...validationContext.signautre,
+          state: ValidationStepState.Passed
+        };
+      }
+      case ValidationType.NBProd || ValidationType.NBAcc: {
+        const keyObject = getKeyFromNationalBackend(
+          decodedCose.keyIdentifier,
+          nationalBackendKeys
+        );
+
+        if (!keyObject) {
+          throw new Error(
+            `Could not find Key Id: [${decodedCose.keyIdentifier}] in Gateway`
+          );
+        }
+
+        const keyPem = formatSpkiAsPem(keyObject?.publicKey);
+
+        const verifier = getVerifierFromPem(keyPem);
+
+        await cose.sign.verify(signedCose, verifier);
+
+        validationContext.signautre = {
+          ...validationContext.signautre,
+          state: ValidationStepState.Passed
+        };
+      }
+    }
   } catch (err) {
     let message = 'Could not be verified';
 
@@ -97,10 +153,48 @@ export const validateDCC = async (
       state: ValidationStepState.Failed,
       message
     };
+
+    console.error(err);
   }
 
   return {
     ...validationContext,
     decodedCose
   };
+};
+
+const getKeyFromNationalBackend = (
+  kid: string,
+  nationalBackendKeys: INationalBackendKeysByEnvironment
+) => {
+  const prodKeyIndex = nationalBackendKeys.PROD?.findIndex((key) => {
+    return key.kid === kid;
+  });
+
+  if (prodKeyIndex !== -1) {
+    return nationalBackendKeys.PROD[prodKeyIndex];
+  }
+
+  const accKeyIndex = nationalBackendKeys.ACC?.findIndex((key) => {
+    return key.kid === kid;
+  });
+
+  if (accKeyIndex !== -1) {
+    return nationalBackendKeys.ACC[accKeyIndex];
+  }
+
+  return null;
+};
+
+const getVerifierFromPem = (publicKeyPem: string): IKey => {
+  const { x, y } = new ecKey(publicKeyPem);
+
+  const verifier: IKey = {
+    key: {
+      x: Buffer.from(x),
+      y: Buffer.from(y)
+    }
+  };
+
+  return verifier;
 };

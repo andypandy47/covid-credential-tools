@@ -2,6 +2,18 @@ export interface IKey {
   key: IECSigner | IECVerifier;
 }
 
+export interface INationalBackendPublicKey {
+  kid: string;
+  publicKey: string;
+  country: string;
+}
+
+export interface INationalBackendKeysByEnvironment {
+  ACC: INationalBackendPublicKey[];
+  PROD: INationalBackendPublicKey[];
+  lastFetched: string;
+}
+
 export interface IECSigner {
   d: Buffer;
 }

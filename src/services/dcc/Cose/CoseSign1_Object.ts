@@ -55,9 +55,8 @@ export class CoseSign1_Object {
 
     const kid = protectedKid ?? unprotectedKid;
 
-    if (kid === undefined) {
-      console.error('Key Id is undefined!');
-      return '';
+    if (!kid) {
+      throw new Error('Key Id is undefined');
     }
 
     const kidBase64 = Buffer.from(kid).toString('base64');

@@ -14,7 +14,7 @@ const DCCTab: React.FC = () => {
           <Tab>Vaccination</Tab>
           <Tab>Recovery</Tab>
           <Tab>Test</Tab>
-          <Tab>Decode</Tab>
+          <Tab>Decode & Verify</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>

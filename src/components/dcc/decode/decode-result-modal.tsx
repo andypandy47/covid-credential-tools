@@ -11,8 +11,9 @@ import {
   Text
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
+import { useGBNationalBackend } from 'hooks/useGBNationalBackend';
 import * as React from 'react';
-import { DefaultValues } from 'services/dcc/constants';
+import { DefaultValues, ValidationType } from 'services/dcc/constants';
 import { EUDCC } from 'services/dcc/dcc-combined-schema';
 import { IValidationContext } from 'services/dcc/dcc-interfaces';
 import { validateDCC } from 'services/dcc/dcc-validation-service';
@@ -24,23 +25,27 @@ interface IDecodeResultModalProps {
   onClose(): void;
   qrData: string;
   publicKeyPem: string;
+  validationType: ValidationType;
 }
 
 const DecodeResultModal: React.FC<IDecodeResultModalProps> = ({
   isOpen,
   onClose,
   qrData,
-  publicKeyPem
+  publicKeyPem,
+  validationType
 }) => {
   const [validationContext, setValidationContext] =
     React.useState<IValidationContext>(DefaultValues.ValidationContext);
+
+  const { nationalBackendData } = useGBNationalBackend();
 
   React.useEffect(() => {
     if (qrData === '') {
       return;
     }
 
-    validateDCC(qrData, publicKeyPem)
+    validateDCC(qrData, nationalBackendData, publicKeyPem, validationType)
       .then((value) => {
         setValidationContext(value);
       })

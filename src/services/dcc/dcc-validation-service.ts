@@ -167,20 +167,21 @@ const getKeyFromNationalBackend = (
   kid: string,
   nationalBackendKeys: INationalBackendKeysByEnvironment
 ) => {
-  const prodKeyIndex = nationalBackendKeys.PROD?.findIndex((key) => {
+  console.log(nationalBackendKeys);
+  const prodKeyIndex = nationalBackendKeys?.PROD?.findIndex((key) => {
     return key.kid === kid;
   });
 
   if (prodKeyIndex !== -1) {
-    return nationalBackendKeys.PROD[prodKeyIndex];
+    return nationalBackendKeys?.PROD[prodKeyIndex];
   }
 
-  const accKeyIndex = nationalBackendKeys.ACC?.findIndex((key) => {
+  const accKeyIndex = nationalBackendKeys?.ACC?.findIndex((key) => {
     return key.kid === kid;
   });
 
   if (accKeyIndex !== -1) {
-    return nationalBackendKeys.ACC[accKeyIndex];
+    return nationalBackendKeys?.ACC[accKeyIndex];
   }
 
   return null;

@@ -40,9 +40,7 @@ const ValidationTypeSelect: React.FC<IValidationTypeSelectProps> = ({
               <Radio value={ValidationType.NBProd} isDisabled>
                 EU Gateway (Prod)
               </Radio>
-              <Radio value={ValidationType.NBAcc}>
-                EU Gateway (Acc)
-              </Radio>
+              <Radio value={ValidationType.NBAcc}>EU Gateway (Acc)</Radio>
               <Radio value={ValidationType.PublicKey}>Input Public Key</Radio>
             </Stack>
           </RadioGroup>

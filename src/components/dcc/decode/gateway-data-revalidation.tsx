@@ -17,6 +17,12 @@ const GatewayDataRevalidation: React.FC = () => {
       //const prodDataResponse = await fetch(process.env.NEXT_PUBLIC_NB_PROD ?? '');
 
       const accDataResponse = await fetch(process.env.NEXT_PUBLIC_NB_ACC ?? '');
+      console.log(process.env.NEXT_PUBLIC_NB_ACC);
+      console.log(accDataResponse);
+
+      if (!accDataResponse.ok) {
+        throw new Error(accDataResponse.statusText);
+      }
 
       //const prodKeys = await prodDataResponse.json();
       const accKeys = await accDataResponse.json();
@@ -40,7 +46,7 @@ const GatewayDataRevalidation: React.FC = () => {
     <Flex flexDirection={'column'} alignItems={'flex-start'}>
       <Text>
         Gateway last fetched:{' '}
-        {dayjs(nationalBackendData.lastFetched)?.format?.(
+        {dayjs(nationalBackendData?.lastFetched)?.format?.(
           'YYYY-MM-DD HH:mm:ss'
         ) ?? ''}
       </Text>

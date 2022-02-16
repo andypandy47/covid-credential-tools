@@ -2,19 +2,17 @@ import {
   Button,
   Divider,
   Flex,
-  FormControl,
-  FormLabel,
   Icon,
   Text,
-  Textarea,
   useDisclosure
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { FiCamera } from 'react-icons/fi';
-import { DefaultValues } from 'services/dcc/constants';
+import { DefaultValues, ValidationType } from 'services/dcc/constants';
 import CameraScanner from './camera-scanner';
-import DecodeResultModal from './decode-result-modal';
+import ValidateResultModal from './validate-result-modal';
 import FileUpload from './file-upload';
+import ValidationTypeSelect from './validation-type-select';
 
 enum DecodeState {
   None = 0,
@@ -24,15 +22,18 @@ enum DecodeState {
   ShowResult = 4
 }
 
-const DecodeTab: React.FC = () => {
+const ValidateTab: React.FC = () => {
   const [publicKey, setPublicKey] = React.useState(DefaultValues.PublicKeyPem);
   const [decodeState, setDecodeState] = React.useState(DecodeState.None);
-  const [data, setData] = React.useState('');
+  const [qrData, setQRData] = React.useState('');
+  const [validationType, setValidationType] = React.useState(
+    ValidationType.NBAcc
+  );
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSuccessfulQRRead = (data: string) => {
-    setData(data);
+    setQRData(data);
     setDecodeState(DecodeState.None);
 
     onOpen();
@@ -40,6 +41,17 @@ const DecodeTab: React.FC = () => {
 
   return (
     <>
+      <Flex alignItems={'center'}>
+        <ValidationTypeSelect
+          validationType={validationType}
+          onSelect={setValidationType}
+          onPublicKeyChange={setPublicKey}
+          publicKeyPem={publicKey}
+        />
+      </Flex>
+
+      <Divider my={3} />
+
       {decodeState === DecodeState.None && (
         <Flex alignItems={'center'} justifyContent={'space-evenly'}>
           <Button
@@ -75,25 +87,16 @@ const DecodeTab: React.FC = () => {
       )}
 
       <Divider mt={3} />
-      <FormControl width={'50%'} mt={3}>
-        <FormLabel>Public Key</FormLabel>
-        <Textarea
-          size={'xs'}
-          value={publicKey}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setPublicKey(e.target.value)
-          }
-        />
-      </FormControl>
 
-      <DecodeResultModal
+      <ValidateResultModal
         isOpen={isOpen}
         onClose={onClose}
-        qrData={data}
+        qrData={qrData}
         publicKeyPem={publicKey}
+        validationType={validationType}
       />
     </>
   );
 };
 
-export default DecodeTab;
+export default ValidateTab;

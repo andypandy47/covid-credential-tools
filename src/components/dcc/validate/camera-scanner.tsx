@@ -63,6 +63,7 @@ const CameraScanner: React.FC<ICameraScannerProps> = ({
           emptyColor={'gray.200'}
           color={'#005EB8'}
           size={'xl'}
+          mt={8}
         />
       )}
 

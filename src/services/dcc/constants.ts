@@ -23,6 +23,7 @@ export class DCCValues {
 
 export class ValidationStepTitles {
   public static readonly ContextIdentifier = 'Context Identifier';
+  public static readonly COSEFormat = 'COSE Format';
   public static readonly IssuingDate = 'Issuing Date';
   public static readonly ExpiryDate = 'Expiry Date';
   public static readonly Signature = 'Signature';
@@ -38,6 +39,12 @@ export enum ValidationStepState {
   None,
   Passed,
   Failed
+}
+
+export enum ValidationType {
+  NBProd,
+  NBAcc,
+  PublicKey
 }
 
 export class DefaultValues {
@@ -105,6 +112,10 @@ MIICCTCCAa+gAwIBAgIUQ4CHxP8wPIcOT00z9CHO4EyG9mAwCgYIKoZIzj0EAwIwMzELMAkGA1UEBhMC
   public static readonly ValidationContext: IValidationContext = {
     contextIdentifier: {
       title: ValidationStepTitles.ContextIdentifier,
+      state: ValidationStepState.None
+    },
+    coseFormat: {
+      title: ValidationStepTitles.COSEFormat,
       state: ValidationStepState.None
     },
     issuingDate: {

@@ -62,13 +62,13 @@ export const validateDCC = async (
   try {
     decodedCose = CoseSign1_Object.decode(signedCose);
 
-    validationContext.coseData = {
-      ...validationContext.coseData,
+    validationContext.coseFormat = {
+      ...validationContext.coseFormat,
       state: ValidationStepState.Passed
     };
   } catch (err) {
-    validationContext.coseData = {
-      ...validationContext.coseData,
+    validationContext.coseFormat = {
+      ...validationContext.coseFormat,
       state: ValidationStepState.Failed
     };
   }
@@ -167,7 +167,6 @@ const getKeyFromNationalBackend = (
   kid: string,
   nationalBackendKeys: INationalBackendKeysByEnvironment
 ) => {
-  console.log(nationalBackendKeys);
   const prodKeyIndex = nationalBackendKeys?.PROD?.findIndex((key) => {
     return key.kid === kid;
   });

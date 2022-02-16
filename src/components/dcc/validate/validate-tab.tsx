@@ -10,7 +10,7 @@ import * as React from 'react';
 import { FiCamera } from 'react-icons/fi';
 import { DefaultValues, ValidationType } from 'services/dcc/constants';
 import CameraScanner from './camera-scanner';
-import DecodeResultModal from './decode-result-modal';
+import ValidateResultModal from './validate-result-modal';
 import FileUpload from './file-upload';
 import ValidationTypeSelect from './validation-type-select';
 
@@ -22,7 +22,7 @@ enum DecodeState {
   ShowResult = 4
 }
 
-const DecodeTab: React.FC = () => {
+const ValidateTab: React.FC = () => {
   const [publicKey, setPublicKey] = React.useState(DefaultValues.PublicKeyPem);
   const [decodeState, setDecodeState] = React.useState(DecodeState.None);
   const [qrData, setQRData] = React.useState('');
@@ -88,7 +88,7 @@ const DecodeTab: React.FC = () => {
 
       <Divider mt={3} />
 
-      <DecodeResultModal
+      <ValidateResultModal
         isOpen={isOpen}
         onClose={onClose}
         qrData={qrData}
@@ -99,4 +99,4 @@ const DecodeTab: React.FC = () => {
   );
 };
 
-export default DecodeTab;
+export default ValidateTab;

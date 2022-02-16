@@ -23,7 +23,7 @@ export class DCCValues {
 
 export class ValidationStepTitles {
   public static readonly ContextIdentifier = 'Context Identifier';
-  public static readonly COSEData = 'COSE Data';
+  public static readonly COSEFormat = 'COSE Format';
   public static readonly IssuingDate = 'Issuing Date';
   public static readonly ExpiryDate = 'Expiry Date';
   public static readonly Signature = 'Signature';
@@ -114,8 +114,8 @@ MIICCTCCAa+gAwIBAgIUQ4CHxP8wPIcOT00z9CHO4EyG9mAwCgYIKoZIzj0EAwIwMzELMAkGA1UEBhMC
       title: ValidationStepTitles.ContextIdentifier,
       state: ValidationStepState.None
     },
-    coseData: {
-      title: ValidationStepTitles.COSEData,
+    coseFormat: {
+      title: ValidationStepTitles.COSEFormat,
       state: ValidationStepState.None
     },
     issuingDate: {

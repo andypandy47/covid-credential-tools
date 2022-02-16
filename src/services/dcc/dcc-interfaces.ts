@@ -33,7 +33,7 @@ export interface IValidationStep {
 
 export interface IValidationContext {
   contextIdentifier: IValidationStep;
-  coseData: IValidationStep;
+  coseFormat: IValidationStep;
   issuingDate: IValidationStep;
   expiryDate: IValidationStep;
   signautre: IValidationStep;

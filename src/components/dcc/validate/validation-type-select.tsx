@@ -37,9 +37,7 @@ const ValidationTypeSelect: React.FC<IValidationTypeSelectProps> = ({
             mr={8}
           >
             <Stack direction="column">
-              <Radio value={ValidationType.NBProd} isDisabled>
-                EU Gateway (Prod)
-              </Radio>
+              <Radio value={ValidationType.NBProd}>EU Gateway (Prod)</Radio>
               <Radio value={ValidationType.NBAcc}>EU Gateway (Acc)</Radio>
               <Radio value={ValidationType.PublicKey}>Input Public Key</Radio>
             </Stack>

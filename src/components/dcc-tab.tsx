@@ -4,7 +4,7 @@ import TestTab from 'components/dcc/generation/test-tab';
 import VaccinationTab from 'components/dcc/generation/vaccination-tab';
 import * as React from 'react';
 import { Styles } from 'services/constants';
-import DecodeTab from './dcc/decode/decode-tab';
+import ValidateTab from './dcc/validate/validate-tab';
 
 const DCCTab: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const DCCTab: React.FC = () => {
           <Tab>Vaccination</Tab>
           <Tab>Recovery</Tab>
           <Tab>Test</Tab>
-          <Tab>Decode & Verify</Tab>
+          <Tab>Validate</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -27,7 +27,7 @@ const DCCTab: React.FC = () => {
             <TestTab />
           </TabPanel>
           <TabPanel>
-            <DecodeTab />
+            <ValidateTab />
           </TabPanel>
         </TabPanels>
       </Tabs>

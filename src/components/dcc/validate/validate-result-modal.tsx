@@ -20,7 +20,7 @@ import { validateDCC } from 'services/dcc/dcc-validation-service';
 import PayloadDisplay from './payload-display';
 import ValidationStep from './validation-step';
 
-interface IDecodeResultModalProps {
+interface IValidateResultModalProps {
   isOpen: boolean;
   onClose(): void;
   qrData: string;
@@ -28,7 +28,7 @@ interface IDecodeResultModalProps {
   validationType: ValidationType;
 }
 
-const DecodeResultModal: React.FC<IDecodeResultModalProps> = ({
+const ValidateResultModal: React.FC<IValidateResultModalProps> = ({
   isOpen,
   onClose,
   qrData,
@@ -123,6 +123,7 @@ const DecodeResultModal: React.FC<IDecodeResultModalProps> = ({
                   <ValidationStep
                     validationStep={validationContext.contextIdentifier}
                   />
+                  <ValidationStep validationStep={validationContext.coseFormat} />
                   <ValidationStep
                     validationStep={validationContext.issuingDate}
                   />
@@ -152,4 +153,4 @@ const DecodeResultModal: React.FC<IDecodeResultModalProps> = ({
   );
 };
 
-export default DecodeResultModal;
+export default ValidateResultModal;

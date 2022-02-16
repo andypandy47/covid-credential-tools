@@ -3,7 +3,6 @@ import { Flex, IconButton, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { useGBNationalBackend } from 'hooks/useGBNationalBackend';
 import * as React from 'react';
-import { INationalBackendPublicKey } from 'services/crypto-interfaces';
 
 const GatewayDataRevalidation: React.FC = () => {
   const { nationalBackendData, setNationalBackendData } =
@@ -15,14 +14,13 @@ const GatewayDataRevalidation: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // const prodDataResponse = await fetch(
-      //   process.env.NEXT_PUBLIC_NB_PROD ?? ''
-      // );
+      const prodDataResponse = await fetch(
+        process.env.NEXT_PUBLIC_NB_PROD ?? ''
+      );
 
       const accDataResponse = await fetch(process.env.NEXT_PUBLIC_NB_ACC ?? '');
 
-      //const prodKeys = prodDataResponse.ok ? await prodDataResponse.json() : [];
-      const prodKeys: INationalBackendPublicKey[] = [];
+      const prodKeys = prodDataResponse.ok ? await prodDataResponse.json() : [];
       const accKeys = accDataResponse.ok ? await accDataResponse.json() : [];
 
       const newDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
@@ -43,7 +41,7 @@ const GatewayDataRevalidation: React.FC = () => {
   return (
     <Flex flexDirection={'column'} alignItems={'flex-start'}>
       <Text>
-        Gateway last fetched:{' '}
+        Keys last fetched:{' '}
         {dayjs(nationalBackendData?.lastFetched)?.format?.(
           'YYYY-MM-DD HH:mm:ss'
         ) ?? ''}
@@ -54,6 +52,7 @@ const GatewayDataRevalidation: React.FC = () => {
         variant={'outline'}
         onClick={handleDataUpdate}
         isLoading={isLoading}
+        isDisabled
       />
     </Flex>
   );

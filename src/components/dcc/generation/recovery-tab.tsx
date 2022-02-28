@@ -35,7 +35,7 @@ const RecoveryTab: React.FC = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    const dccType = DCCEntryType.Vaccination;
+    const dccType = DCCEntryType.Recovery;
 
     try {
       const generatedDCC = await generateDCC(

@@ -33,7 +33,7 @@ const TestTab: React.FC = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    const dccType = DCCEntryType.Vaccination;
+    const dccType = DCCEntryType.Test;
 
     try {
       const generatedDCC = await generateDCC(

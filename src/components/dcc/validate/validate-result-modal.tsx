@@ -123,7 +123,9 @@ const ValidateResultModal: React.FC<IValidateResultModalProps> = ({
                   <ValidationStep
                     validationStep={validationContext.contextIdentifier}
                   />
-                  <ValidationStep validationStep={validationContext.coseFormat} />
+                  <ValidationStep
+                    validationStep={validationContext.coseFormat}
+                  />
                   <ValidationStep
                     validationStep={validationContext.issuingDate}
                   />

@@ -116,6 +116,8 @@ export const validateDCC = async (
           ...validationContext.signautre,
           state: ValidationStepState.Passed
         };
+
+        break;
       }
       case ValidationType.NBProd || ValidationType.NBAcc: {
         const keyObject = getKeyFromNationalBackend(
@@ -139,6 +141,8 @@ export const validateDCC = async (
           ...validationContext.signautre,
           state: ValidationStepState.Passed
         };
+
+        break;
       }
     }
   } catch (err) {

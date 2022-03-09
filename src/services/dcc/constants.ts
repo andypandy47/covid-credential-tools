@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import {
   RecoveryEntry,
   TestEntry,
+  UKDomesticEntry,
   VaccinationEntry
 } from './dcc-combined-schema';
 import {
@@ -32,7 +33,8 @@ export class ValidationStepTitles {
 export enum DCCEntryType {
   Vaccination,
   Recovery,
-  Test
+  Test,
+  UKDomestic
 }
 
 export enum ValidationStepState {
@@ -107,6 +109,16 @@ MIICCTCCAa+gAwIBAgIUQ4CHxP8wPIcOT00z9CHO4EyG9mAwCgYIKoZIzj0EAwIwMzELMAkGA1UEBhMC
     co: 'GB',
     is: 'NHS Digital',
     ci: 'URN:UVCI:01:GB:1643188068882Q5PU76VZ#V'
+  };
+
+  public static readonly UKDomesticEntry: UKDomesticEntry = {
+    co: 'GB-ENG',
+    is: 'NHS Digital',
+    ci: 'URN:UVCI:01:GB:1643188028017ZPZEURP2#T',
+    df: dayjs().subtract(2, 'day').format('YYYY-MM-DD'),
+    du: dayjs().add(3, 'week').format('YYYY-MM-DD'),
+    pm: 123,
+    po: ['GB-ENG:3']
   };
 
   public static readonly ValidationContext: IValidationContext = {

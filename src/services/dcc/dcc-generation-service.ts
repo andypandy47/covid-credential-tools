@@ -16,6 +16,7 @@ import {
   EUDCC,
   RecoveryEntry,
   TestEntry,
+  UKDomesticEntry,
   VaccinationEntry
 } from './dcc-combined-schema';
 import { IKey } from '../crypto-interfaces';
@@ -84,7 +85,7 @@ const getPrivateKeySigner = (
 
 const getPayloadDetails = (
   dccType: DCCEntryType,
-  payloadDetails: VaccinationEntry | RecoveryEntry | TestEntry
+  payloadDetails: VaccinationEntry | RecoveryEntry | TestEntry | UKDomesticEntry
 ): EUDCC => {
   switch (dccType) {
     case DCCEntryType.Vaccination:
@@ -101,6 +102,8 @@ const getPayloadDetails = (
       }
 
       return { t: [testEntry] };
+    case DCCEntryType.UKDomestic:
+      return { d: [payloadDetails as UKDomesticEntry] };
     default:
       throw new Error('DCC Type not set');
   }
@@ -110,7 +113,11 @@ export const generateDCC = async (
   personalDetails: IPersonalDetails,
   securityClaims: ISecurityClaims,
   signingDetails: ISigningDetails,
-  payloadDetails: VaccinationEntry | RecoveryEntry | TestEntry,
+  payloadDetails:
+    | VaccinationEntry
+    | RecoveryEntry
+    | TestEntry
+    | UKDomesticEntry,
   dccType: DCCEntryType
 ): Promise<IDCCGenerationResponse> => {
   const expEpoch = dayjs(securityClaims.expiry).unix();

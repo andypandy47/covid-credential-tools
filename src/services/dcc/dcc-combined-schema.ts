@@ -67,7 +67,7 @@ export interface EUDCC1 {
    */
   r?: [RecoveryEntry];
 
-  d?: [DomesticEntry];
+  d?: [UKDomesticEntry];
   [k: string]: unknown;
 }
 /**
@@ -191,7 +191,7 @@ export interface RecoveryEntry {
   [k: string]: unknown;
 }
 
-export interface DomesticEntry {
+export interface UKDomesticEntry {
   co: string;
 
   is: string;
@@ -204,7 +204,7 @@ export interface DomesticEntry {
 
   pm: number;
 
-  po: [];
+  po: string[];
 
   [k: string]: unknown;
 }

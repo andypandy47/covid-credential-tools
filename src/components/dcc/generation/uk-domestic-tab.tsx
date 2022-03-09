@@ -8,19 +8,19 @@ import { IDCCGenerationResponse } from 'services/dcc/dcc-interfaces';
 import PersonalDetailsForm from './forms/personal-details-form';
 import SecurityClaimsForm from './forms/security-claims-form';
 import SigningDetailsForm from './forms/signing-details-form';
-import VaccinationDetailsForm from './forms/vaccination-details-form';
+import UKDomesticDetailsForm from './forms/uk-domestic-details-form';
 
 const DynamicModal = dynamic(() => import('./generation-result-modal'));
 
-const VaccinationTab: React.FC = () => {
+const UkDomesticTab: React.FC = () => {
   const [personalDetails, setPersonalDetails] = React.useState(
     DefaultValues.PersonalDetails
   );
   const [securityClaims, setSecurityClaims] = React.useState(
     DefaultValues.SecurityClaims
   );
-  const [vaccinationDetails, setVaccinationDetails] = React.useState(
-    DefaultValues.VaccinationEntry
+  const [ukDomesticDetails, setUkDomesticDetails] = React.useState(
+    DefaultValues.UKDomesticEntry
   );
   const [signingDetails, setSigningDetails] = React.useState(
     DefaultValues.SigningDetails
@@ -31,19 +31,20 @@ const VaccinationTab: React.FC = () => {
   );
 
   const [isLoading, setIsLoading] = React.useState(false);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    const dccType = DCCEntryType.Vaccination;
+    const dccType = DCCEntryType.UKDomestic;
 
     try {
       const generatedDCC = await generateDCC(
         personalDetails,
         securityClaims,
         signingDetails,
-        vaccinationDetails,
+        ukDomesticDetails,
         dccType
       );
 
@@ -60,9 +61,9 @@ const VaccinationTab: React.FC = () => {
 
   return (
     <Flex direction={'row'} mt={5} justifyContent={'space-between'}>
-      <VaccinationDetailsForm
-        vaccinationDetails={vaccinationDetails}
-        onFormChange={setVaccinationDetails}
+      <UKDomesticDetailsForm
+        ukDomesticDetails={ukDomesticDetails}
+        onFormChange={setUkDomesticDetails}
       />
       <Flex direction={'column'} justifyContent={'space-between'}>
         <Stack direction={'column'} spacing={6}>
@@ -101,4 +102,4 @@ const VaccinationTab: React.FC = () => {
   );
 };
 
-export default VaccinationTab;
+export default UkDomesticTab;

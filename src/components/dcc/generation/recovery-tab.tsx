@@ -1,4 +1,5 @@
 import { Button, Flex, Stack, useDisclosure } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { Styles } from 'services/constants';
 import { DCCEntryType, DefaultValues } from 'services/dcc/constants';
@@ -8,7 +9,8 @@ import PersonalDetailsForm from './forms/personal-details-form';
 import RecoveryDetailsForm from './forms/recovery-details-form';
 import SecurityClaimsForm from './forms/security-claims-form';
 import SigningDetailsForm from './forms/signing-details-form';
-import GenerationResultModal from './generation-result-modal';
+
+const DynamicModal = dynamic(() => import('./generation-result-modal'));
 
 const RecoveryTab: React.FC = () => {
   const [personalDetails, setPersonalDetails] = React.useState(
@@ -90,7 +92,7 @@ const RecoveryTab: React.FC = () => {
           </Flex>
         </Stack>
       </Flex>
-      <GenerationResultModal
+      <DynamicModal
         isOpen={isOpen}
         onClose={onClose}
         onGenerationComplete={() => setIsLoading(false)}

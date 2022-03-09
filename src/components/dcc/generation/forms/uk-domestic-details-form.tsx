@@ -1,17 +1,20 @@
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import {
+  Flex,
   FormControl,
   FormLabel,
   Heading,
   IconButton,
   Input,
+  ListItem,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
   Stack,
-  Text
+  Text,
+  UnorderedList
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { Styles } from 'services/constants';
@@ -41,6 +44,13 @@ const UKDomesticDetailsForm: React.FC<IUKDomesticDetailsFormProps> = ({
     setNewPolicy('');
   };
 
+  const handleDeletePolicyValue = (index: number) => {
+    const newPo = [...ukDomesticDetails.po];
+    newPo.splice(index, 1);
+
+    onFormChange({ ...ukDomesticDetails, po: newPo });
+  };
+
   return (
     <Stack direction={'column'} spacing={3}>
       <Heading as="h3" size="lg">
@@ -58,13 +68,25 @@ const UKDomesticDetailsForm: React.FC<IUKDomesticDetailsFormProps> = ({
           />
         </FormLabel>
 
-        {ukDomesticDetails.po.map((value, index) => {
-          return (
-            <Text key={`${value}-${index}`} mb={1}>
-              {value}
-            </Text>
-          );
-        })}
+        <UnorderedList ml={8}>
+          {ukDomesticDetails.po.map((value, index) => {
+            return (
+              <ListItem key={`${value}-${index}`}>
+                <Flex width={'full'} justifyContent={'space-between'}>
+                  <Text mb={1}>{value}</Text>
+                  <IconButton
+                    icon={<DeleteIcon />}
+                    size={'xs'}
+                    variant={'ghost'}
+                    aria-label={'delete-policy-value'}
+                    color={'red.600'}
+                    onClick={() => handleDeletePolicyValue(index)}
+                  />
+                </Flex>
+              </ListItem>
+            );
+          })}
+        </UnorderedList>
 
         {isAddingNewPolicy ? (
           <Input
@@ -76,6 +98,7 @@ const UKDomesticDetailsForm: React.FC<IUKDomesticDetailsFormProps> = ({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setNewPolicy(e.target.value)
             }
+            autoFocus
           />
         ) : null}
       </FormControl>

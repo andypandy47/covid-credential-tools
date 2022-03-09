@@ -46,7 +46,7 @@ const GenerationResultModal: React.FC<IGenerationResultModalProps> = ({
   const downloadQR = () => {
     const url = canvas.toDataURL('image/png');
     const link = document.createElement('a');
-    link.download = 'vaccine_qr.png';
+    link.download = `${DCCEntryType[generationResult.dccType]}_qr.png`;
     link.href = url;
     link.click();
   };

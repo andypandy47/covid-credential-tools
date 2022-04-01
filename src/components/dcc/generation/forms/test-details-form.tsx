@@ -80,7 +80,7 @@ const TestDetailsForm: React.FC<ITestDetailsFormProps> = ({
       <FormControl>
         <FormLabel>Date/Time of Sample Collection</FormLabel>
         <Input
-          type={'datetime-local'}
+          type={'text'}
           size={'sm'}
           width={Styles.InputWidth}
           value={testDetails.sc}

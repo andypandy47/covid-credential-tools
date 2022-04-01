@@ -115,7 +115,7 @@ const VaccinationDetailsForm: React.FC<IVaccinationDetailsFormProps> = ({
       <FormControl>
         <FormLabel>Date of Vaccination</FormLabel>
         <Input
-          type={'date'}
+          type={'text'}
           size={'sm'}
           width={Styles.InputWidth}
           value={vaccinationDetails.dt}

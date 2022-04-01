@@ -125,7 +125,7 @@ const UKDomesticDetailsForm: React.FC<IUKDomesticDetailsFormProps> = ({
       <FormControl>
         <FormLabel>Date From</FormLabel>
         <Input
-          type={'date'}
+          type={'text'}
           size={'sm'}
           width={Styles.InputWidth}
           value={ukDomesticDetails.df}
@@ -137,7 +137,7 @@ const UKDomesticDetailsForm: React.FC<IUKDomesticDetailsFormProps> = ({
       <FormControl>
         <FormLabel>Date Until</FormLabel>
         <Input
-          type={'date'}
+          type={'text'}
           size={'sm'}
           width={Styles.InputWidth}
           value={ukDomesticDetails.du}

@@ -38,7 +38,7 @@ const RecoveryDetailsForm: React.FC<IRecoveryDetailsFormProps> = ({
       <FormControl>
         <FormLabel>Date of First Positive NAA Test</FormLabel>
         <Input
-          type={'date'}
+          type={'text'}
           size={'sm'}
           width={Styles.InputWidth}
           value={recoveryDetails.fr}

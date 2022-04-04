@@ -39,7 +39,7 @@ const SecurityClaimsForm: React.FC<ISecurityClaimsFormProps> = ({
       <FormControl>
         <FormLabel>Issued At</FormLabel>
         <Input
-          type={'date'}
+          type={'text'}
           size={'sm'}
           width={inputWidth}
           value={securityClaims.issuingDate}
@@ -51,7 +51,7 @@ const SecurityClaimsForm: React.FC<ISecurityClaimsFormProps> = ({
       <FormControl>
         <FormLabel>Expiry</FormLabel>
         <Input
-          type={'date'}
+          type={'text'}
           size={'sm'}
           width={inputWidth}
           value={securityClaims.expiry}

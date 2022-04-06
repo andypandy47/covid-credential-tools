@@ -5,6 +5,7 @@ import VaccinationTab from 'components/dcc/generation/vaccination-tab';
 import * as React from 'react';
 import { Styles } from 'services/constants';
 import UkDomesticTab from './dcc/generation/uk-domestic-tab';
+import KidAndPublicKeyExtractor from './dcc/kid-and-public-key-extractor';
 import ValidateTab from './dcc/validate/validate-tab';
 
 const DCCTab: React.FC = () => {
@@ -17,6 +18,7 @@ const DCCTab: React.FC = () => {
           <Tab>Test</Tab>
           <Tab>UK Domestic</Tab>
           <Tab>Validate</Tab>
+          <Tab>KID + Public Key Extraction</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -33,6 +35,9 @@ const DCCTab: React.FC = () => {
           </TabPanel>
           <TabPanel>
             <ValidateTab />
+          </TabPanel>
+          <TabPanel>
+            <KidAndPublicKeyExtractor />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -9,14 +9,14 @@ import {
 } from '@chakra-ui/react';
 import * as React from 'react';
 
-interface IResultValueProps {
+interface ICopyableResultValueProps {
   label: string;
   value: string;
   height: string;
   onCopy(): void;
 }
 
-const ResultValue: React.FC<IResultValueProps> = ({
+const CopyableResultValue: React.FC<ICopyableResultValueProps> = ({
   label,
   value,
   height,
@@ -55,4 +55,4 @@ const ResultValue: React.FC<IResultValueProps> = ({
   );
 };
 
-export default ResultValue;
+export default CopyableResultValue;

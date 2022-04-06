@@ -1,5 +1,5 @@
-import { Flex, Icon, Text, useToast } from '@chakra-ui/react';
 import * as React from 'react';
+import { Flex, Icon, Text, useToast } from '@chakra-ui/react';
 import { useDropzone } from 'react-dropzone';
 import { FiUpload } from 'react-icons/fi';
 import QrScanner from 'qr-scanner';

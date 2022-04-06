@@ -4,10 +4,8 @@ import cbor from 'cbor';
 import cose from 'cose-js';
 import dayjs from 'dayjs';
 import ecKey from 'ec-key';
-import { Base64 } from 'js-base64';
 import x509 from 'js-x509-utils';
-import jwkToPem from 'jwk-to-pem';
-import sha256 from 'sha256';
+
 import {
   supportedAlgorithms,
   x509AlgorithmsToCOSEAlgortihms
@@ -29,8 +27,8 @@ import {
 import { DCCEntryType, DCCValues } from './constants';
 import icaotransliteration from 'icao-transliteration';
 
-const certPrefix = '-----BEGIN CERTIFICATE-----\n';
-const certPostfix = '-----END CERTIFICATE-----';
+import extractKid from 'utilities/extract-kid';
+import getPublicKeyPem from 'utilities/get-public-key-pem';
 
 const CWT_ISSUER = 1;
 const CWT_EXP = 4;
@@ -38,25 +36,6 @@ const CWT_IAT = 6;
 const CWT_HCERT = -260;
 
 const hcertContextIdentifier = 'HC1:';
-
-const removeCertTags = (cert: string) => {
-  return cert.replace(certPrefix, '').replace(certPostfix, '');
-};
-
-const extractKid = (cert: string): Uint8Array => {
-  const certNoTags = removeCertTags(cert);
-  const decodedCert = Base64.toUint8Array(certNoTags);
-
-  const hashBuffer = sha256(decodedCert, { asBytes: true }) as Uint8Array;
-
-  return hashBuffer.slice(0, 8);
-};
-
-const getPublicKeyPem = async (dscPem: string): Promise<string> => {
-  const publicJwk = await x509.toJwk(dscPem, 'pem');
-
-  return jwkToPem(publicJwk);
-};
 
 const getSigningAlgorithm = async (dscPem: string): Promise<string> => {
   const parsedX509 = await x509.parse(dscPem, 'pem');

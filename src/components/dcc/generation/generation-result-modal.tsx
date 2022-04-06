@@ -15,7 +15,7 @@ import { toCanvas } from 'qrcode';
 import * as React from 'react';
 import { DCCEntryType } from 'services/dcc/constants';
 import { IDCCGenerationResponse } from 'services/dcc/dcc-interfaces';
-import ResultValue from './result-value';
+import CopyableResultValue from 'components/copyable-result-value';
 
 interface IGenerationResultModalProps {
   isOpen: boolean;
@@ -98,19 +98,19 @@ const GenerationResultModal: React.FC<IGenerationResultModalProps> = ({
               justifyContent={'flex-start'}
               minHeight={'100%'}
             >
-              <ResultValue
+              <CopyableResultValue
                 label="HC1"
                 value={generationResult.signedHcert}
                 height="200px"
                 onCopy={onHcertCopy}
               />
-              <ResultValue
+              <CopyableResultValue
                 label="Public Key"
                 value={generationResult.publicKeyPem}
                 height="110px"
                 onCopy={onPublicKeyCopy}
               />
-              <ResultValue
+              <CopyableResultValue
                 label="Key Id"
                 height="50px"
                 value={generationResult.kid}

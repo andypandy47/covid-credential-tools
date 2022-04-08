@@ -9,6 +9,7 @@ Allows users to generate, read and verify Covid Credentials as defined by variou
 - [x] x509 KID & Public Key Extractor
 - [x] UK Domestic Gen
 - [x] UK Domestic Read and Validate
+- [ ] API Endpoint to generate DCC test data
 - [ ] Smart Health Cards Gen
 - [ ] Smart Health Cards Read
 - [ ] ICAO VDS-NC Gen

@@ -15,6 +15,7 @@
     "@chakra-ui/react": "^1.7.4",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "@faker-js/faker": "^6.1.2",
     "base45-web": "^1.0.2",
     "bignumber.js": "^9.0.2",
     "browserify-zlib": "^0.2.0",

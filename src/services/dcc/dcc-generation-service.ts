@@ -19,6 +19,7 @@ import {
 } from './dcc-combined-schema';
 import { IKey } from '../crypto-interfaces';
 import {
+  IDCC,
   IDCCGenerationResponse,
   IPersonalDetails,
   ISecurityClaims,
@@ -162,9 +163,19 @@ export const generateDCC = async (
 
   const prefixed = `${hcertContextIdentifier}${base45Encoded}`;
 
+  const dccForJSON: IDCC = {
+    iat: iatEpoch,
+    exp: expEpoch,
+    iss: securityClaims.issuerCountry,
+    hCert: {
+      euHcertV1Schema: dccPayload
+    }
+  };
+
   return {
     signedHcert: prefixed,
     kid: Buffer.from(kid).toString('base64'),
-    publicKeyPem
+    publicKeyPem,
+    expectedDCCPayload: dccForJSON
   } as IDCCGenerationResponse;
 };

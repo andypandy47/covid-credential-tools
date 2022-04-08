@@ -128,7 +128,9 @@ export class FakeDCCService {
 
       return {
         ...generatedDCCResponse,
-        publicKeyPem: removeKeyHeaders(generatedDCCResponse.publicKeyPem)
+        publicKeyPem: removeKeyHeaders(
+          generatedDCCResponse.publicKeyPem
+        ).replace(/\n/gm, '')
       };
     };
 

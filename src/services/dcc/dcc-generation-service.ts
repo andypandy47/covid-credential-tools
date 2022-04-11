@@ -117,10 +117,10 @@ export const generateDCC = async (
     ver: '1.3.0',
     nam: {
       gn: personalDetails.givenName,
+      fn: personalDetails.foreName,
       gnt: gnTransliterated,
       fnt: fnTransliterated
     },
-    fn: personalDetails.foreName,
     dob: personalDetails.dob
   };
 

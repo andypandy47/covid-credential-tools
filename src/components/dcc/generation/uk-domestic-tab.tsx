@@ -1,7 +1,7 @@
 import { Button, Flex, Stack, useDisclosure } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
-import { Styles } from 'services/crypto-constantsnstants';
+import { Styles } from 'styles/style-constants';
 import { DCCEntryType, DefaultValues } from 'services/dcc/constants';
 import { generateDCC } from 'services/dcc/dcc-generation-service';
 import { IDCCGenerationResponse } from 'services/dcc/dcc-interfaces';

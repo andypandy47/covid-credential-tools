@@ -80,7 +80,6 @@ export class CoseSign1_Object {
     return (
       this.content.get(ContentParameterKey.HCERT) as Map<number, EUDCC>
     ).get(1) as EUDCC;
-    //return (this.content["-260"] as Map<string, EUDCC>)["1"] as EUDCC;
   }
 }
 

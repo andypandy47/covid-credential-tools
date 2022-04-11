@@ -9,7 +9,7 @@ import x509 from 'js-x509-utils';
 import {
   supportedAlgorithms,
   x509AlgorithmsToCOSEAlgortihms
-} from '../constants';
+} from '../crypto-constants';
 import {
   EUDCC,
   RecoveryEntry,
@@ -25,7 +25,9 @@ import {
   ISecurityClaims,
   ISigningDetails
 } from './dcc-interfaces';
+
 import { DCCEntryType, DCCValues } from './constants';
+
 import icaotransliteration from 'icao-transliteration';
 
 import extractKid from 'utilities/extract-kid';

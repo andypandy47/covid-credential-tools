@@ -1,30 +1,30 @@
+import { faker, GenderType } from '@faker-js/faker';
+import dayjs from 'dayjs';
+import { removeKeyHeaders } from 'utilities/get-public-key-pem';
+import getRandomInt from 'utilities/random-int';
+import { DCCEntryType } from '../constants';
 import {
   RecoveryEntry,
   TestEntry,
+  UKDomesticEntry,
   VaccinationEntry
 } from '../dcc-combined-schema';
+import { generateDCC } from '../dcc-generation-service';
 import {
   IDCCGenerationResponse,
   IPersonalDetails,
   ISecurityClaims,
   ISigningDetails
 } from '../dcc-interfaces';
-import { IDCCValueSets, VaccineMaps } from '../value-sets';
-import { faker, GenderType } from '@faker-js/faker';
-import dayjs from 'dayjs';
+import {
+  DomesticIssuingCountryMap,
+  TestManufacturers,
+  TestTypes,
+  VaccineMaps
+} from '../value-sets';
 import { privateKeys, publicCerts } from './fake-signing-details';
-import { generateDCC } from '../dcc-generation-service';
-import { DCCEntryType } from '../constants';
-import { removeKeyHeaders } from 'utilities/get-public-key-pem';
-import randomInt from 'utilities/random-int';
 
 export class FakeDCCService {
-  constructor(valueSets: IDCCValueSets) {
-    this.ValueSets = valueSets;
-  }
-
-  private ValueSets: IDCCValueSets;
-
   private IssuingCountries: string[] = [
     'GB',
     'FR',
@@ -77,42 +77,53 @@ export class FakeDCCService {
     };
   };
 
+  private generateFakeSecurityClaims = (
+    issOverride: string = null
+  ): ISecurityClaims => {
+    const issuingDate = dayjs().subtract(6, 'month').format('YYYY-MM-DD');
+    const expiry = dayjs().add(6, 'month').format('YYYY-MM-DD');
+    const issuerCountry =
+      issOverride ??
+      this.IssuingCountries[getRandomInt(this.IssuingCountries.length)];
+
+    return {
+      issuingDate,
+      expiry,
+      issuerCountry
+    };
+  };
+
   private getFakeSigningDetails = (): ISigningDetails => {
-    const index = randomInt(0, publicCerts.length);
+    const index = getRandomInt(publicCerts.length);
     return {
       dscPem: publicCerts[index],
       privateKeyPem: privateKeys[index]
     };
   };
 
+  private generateUVCI = (issuerCountry: string): string => {
+    const uvci = `URN:UVCI:01:${issuerCountry}:${faker.random
+      .alphaNumeric(21)
+      .toUpperCase()}`;
+
+    return `${uvci}#${this.generateCheckCharacter(uvci)}`;
+  };
+
   public generateFakeVaccineCertificate =
     async (): Promise<IDCCGenerationResponse> => {
       const personalDetails = this.generateFakePersonalDetails();
 
-      const issuingDate = dayjs().subtract(6, 'month').format('YYYY-MM-DD');
-      const expiry = dayjs().add(6, 'month').format('YYYY-MM-DD');
-      const issuerCountry =
-        this.IssuingCountries[randomInt(0, this.IssuingCountries.length)];
+      const securityClaims = this.generateFakeSecurityClaims();
 
-      const securityClaims: ISecurityClaims = {
-        issuingDate,
-        expiry,
-        issuerCountry
-      };
-
-      const uvci = `URN:UVCI:01:${issuerCountry}:${faker.random
-        .alphaNumeric(21)
-        .toUpperCase()}`;
-
-      const vaccineMap = VaccineMaps[randomInt(0, VaccineMaps.length)];
+      const vaccineMap = VaccineMaps[getRandomInt(VaccineMaps.length)];
 
       const payload: VaccinationEntry = {
         ...vaccineMap,
-        co: issuerCountry,
-        ci: `${uvci}#${this.generateCheckCharacter(uvci)}`,
+        co: securityClaims.issuerCountry,
+        ci: this.generateUVCI(securityClaims.issuerCountry),
         is: faker.company.companyName(),
         tg: '840539006',
-        dn: randomInt(1, vaccineMap.sd + 1),
+        dn: getRandomInt(vaccineMap.sd + 1) + 1,
         dt: dayjs(faker.date.recent(60)).format('YYYY-MM-DD')
       };
 
@@ -134,11 +145,119 @@ export class FakeDCCService {
       };
     };
 
-  public generateFakeTestEntry = (): TestEntry => {
-    return null;
+  public generateFakeTestEntry = async (): Promise<IDCCGenerationResponse> => {
+    const personalDetails = this.generateFakePersonalDetails();
+
+    const securityClaims = this.generateFakeSecurityClaims();
+
+    const testType = TestTypes[getRandomInt(2)];
+
+    const payload: TestEntry = {
+      co: securityClaims.issuerCountry,
+      ci: this.generateUVCI(securityClaims.issuerCountry),
+      is: faker.company.companyName(),
+      tg: '840539006',
+      tr: '260415000',
+      tc: faker.address.city(),
+      sc: dayjs(faker.date.recent(1)).format('YYYY-MM-DDTHH:mm'),
+      tt: testType,
+      nm: faker.company.companyName(),
+      ma: TestManufacturers[getRandomInt(TestManufacturers.length)]
+    };
+
+    const signingDetails = this.getFakeSigningDetails();
+
+    const generatedDCCResponse = await generateDCC(
+      personalDetails,
+      securityClaims,
+      signingDetails,
+      payload,
+      DCCEntryType.Test
+    );
+
+    return {
+      ...generatedDCCResponse,
+      publicKeyPem: removeKeyHeaders(generatedDCCResponse.publicKeyPem).replace(
+        /\n/gm,
+        ''
+      )
+    };
   };
 
-  public generateFakeRecoveryEntry = (): RecoveryEntry => {
-    return null;
-  };
+  public generateFakeRecoveryEntry =
+    async (): Promise<IDCCGenerationResponse> => {
+      const personalDetails = this.generateFakePersonalDetails();
+
+      const securityClaims = this.generateFakeSecurityClaims();
+
+      const payload: RecoveryEntry = {
+        co: securityClaims.issuerCountry,
+        ci: this.generateUVCI(securityClaims.issuerCountry),
+        is: faker.company.companyName(),
+        tg: '840539006',
+        df: dayjs(
+          faker.date.between(
+            dayjs().subtract(1, 'month').toString(),
+            faker.date.recent(3)
+          )
+        ).format('YYYY-MM-DD'),
+        du: dayjs().add(5, 'month').format('YYYY-MM-DD'),
+        fr: dayjs().subtract(1, 'month').subtract(5, 'day').format('YYYY-MM-DD')
+      };
+
+      const signingDetails = this.getFakeSigningDetails();
+
+      const generatedDCCResponse = await generateDCC(
+        personalDetails,
+        securityClaims,
+        signingDetails,
+        payload,
+        DCCEntryType.Recovery
+      );
+
+      return {
+        ...generatedDCCResponse,
+        publicKeyPem: removeKeyHeaders(
+          generatedDCCResponse.publicKeyPem
+        ).replace(/\n/gm, '')
+      };
+    };
+
+  public generateFakeUKDomesticEntry =
+    async (): Promise<IDCCGenerationResponse> => {
+      const personalDetails = this.generateFakePersonalDetails();
+
+      const securityClaims = this.generateFakeSecurityClaims('GB');
+
+      const certificateCountry = Object.keys(DomesticIssuingCountryMap)[
+        getRandomInt(2)
+      ];
+
+      const payload: UKDomesticEntry = {
+        co: certificateCountry,
+        ci: this.generateUVCI(securityClaims.issuerCountry),
+        is: faker.company.companyName(),
+        df: securityClaims.issuingDate,
+        du: securityClaims.expiry,
+        pm: 123,
+        po: [...DomesticIssuingCountryMap[certificateCountry]]
+      };
+
+      const signingDetails = this.getFakeSigningDetails();
+
+      const generatedDCCResponse = await generateDCC(
+        personalDetails,
+        securityClaims,
+        signingDetails,
+        payload,
+        DCCEntryType.UKDomestic
+      );
+
+      return {
+        ...generatedDCCResponse,
+        publicKeyPem: removeKeyHeaders(
+          generatedDCCResponse.publicKeyPem
+        ).replace(/\n/gm, '')
+      };
+    };
 }

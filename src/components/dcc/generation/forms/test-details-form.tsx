@@ -8,7 +8,7 @@ import {
   Stack
 } from '@chakra-ui/react';
 import * as React from 'react';
-import { Styles } from 'services/constants';
+import { Styles } from 'services/crypto-constantsnstants';
 import { DCCValues } from 'services/dcc/constants';
 import { TestEntry } from 'services/dcc/dcc-combined-schema';
 

@@ -1,5 +1,5 @@
 import { DCCEntryType, ValidationStepState } from './constants';
-import { CoseSign1_Object } from './Cose/CoseSign1_Object';
+import { CoseSign1_Object } from './cose/CoseSign1_Object';
 import { EUDCC } from './dcc-combined-schema';
 
 export interface IPersonalDetails {

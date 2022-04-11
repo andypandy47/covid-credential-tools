@@ -1,24 +1,40 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { DCCEntryType } from 'services/dcc/constants';
 import { IDCCGenerationResponse } from 'services/dcc/dcc-interfaces';
 import { FakeDCCService } from 'services/dcc/faker/fake-dcc-service';
-import { IDCCValueSets } from 'services/dcc/value-sets';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const valueSetsResponse = await fetch(
-    'https://covid-status.service.nhsx.nhs.uk/eudcc/ValueSets?LocalValueSetDate=2021-03-03'
-  );
-  const valueSets = (await valueSetsResponse.json()) as IDCCValueSets;
-
-  const fakeDCCService = new FakeDCCService(valueSets);
+  const fakeDCCService = new FakeDCCService();
 
   const fakeDCCs: IDCCGenerationResponse[] = [];
 
   const count = Number(req.query.count ?? 5);
 
-  for (let i = 0; i < count; i++) {
-    const fakeDCC = await fakeDCCService.generateFakeVaccineCertificate();
+  const type = Number(req.query.type ?? 0) as DCCEntryType;
 
-    fakeDCCs.push(fakeDCC);
+  for (let i = 0; i < count; i++) {
+    switch (type) {
+      case DCCEntryType.Vaccination: {
+        const fakeDCC = await fakeDCCService.generateFakeVaccineCertificate();
+        fakeDCCs.push(fakeDCC);
+        break;
+      }
+      case DCCEntryType.Test: {
+        const fakeDCC = await fakeDCCService.generateFakeTestEntry();
+        fakeDCCs.push(fakeDCC);
+        break;
+      }
+      case DCCEntryType.Recovery: {
+        const fakeDCC = await fakeDCCService.generateFakeRecoveryEntry();
+        fakeDCCs.push(fakeDCC);
+        break;
+      }
+      case DCCEntryType.UKDomestic: {
+        const fakeDCC = await fakeDCCService.generateFakeUKDomesticEntry();
+        fakeDCCs.push(fakeDCC);
+        break;
+      }
+    }
   }
 
   res.status(200).json(fakeDCCs);

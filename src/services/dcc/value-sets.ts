@@ -1,20 +1,8 @@
-interface IDCCValueSet {
-  [key: string]: string;
-}
+import { DCCValues } from './constants';
 
-export interface IDCCValueSets {
-  valueSetDate: string;
-  valueSets: {
-    diseasesTargeted: IDCCValueSet;
-    testManufacturers: IDCCValueSet;
-    testResults: IDCCValueSet;
-    testTypes: IDCCValueSet;
-    vaccineManufacturers: IDCCValueSet;
-    vaccineNames: IDCCValueSet;
-    vaccineTypes: IDCCValueSet;
-  };
+interface MapObject {
+  [key: string]: string[];
 }
-
 interface IVaccineMap {
   vp: string;
   mp: string;
@@ -54,3 +42,24 @@ export const VaccineMaps: IVaccineMap[] = [
     sd: 2
   }
 ];
+
+export const TestManufacturers: string[] = [
+  '1883',
+  '1232',
+  '1468',
+  '2108',
+  '1870',
+  '1484',
+  '1173',
+  '1253',
+  '2183',
+  '1215',
+  '1271'
+];
+
+export const TestTypes: string[] = [DCCValues.NAATValue, DCCValues.RATValue];
+
+export const DomesticIssuingCountryMap: MapObject = {
+  'GB-ENG': ['GB-ENG:3', 'GB-ENG:2'],
+  'GB-SCT': ['GB-SCT:2', 'GB-SCT:1']
+};

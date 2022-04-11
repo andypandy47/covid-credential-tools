@@ -12,7 +12,7 @@ import { useGBNationalBackend } from 'hooks/useGBNationalBackend';
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect } from 'react';
-import { Styles } from 'services/constants';
+import { Styles } from 'services/crypto-constantsnstants';
 import { INationalBackendKeysByEnvironment } from 'services/crypto-interfaces';
 
 interface IHomeProps {

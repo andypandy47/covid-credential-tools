@@ -1,5 +1,5 @@
-const randomInt = (min: number, max: number): number => {
-  return Math.floor(Math.random() * (max - min) + min);
+const getRandomInt = (max: number): number => {
+  return Math.floor(Math.random() * max);
 };
 
-export default randomInt;
+export default getRandomInt;

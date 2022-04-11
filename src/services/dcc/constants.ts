@@ -31,10 +31,10 @@ export class ValidationStepTitles {
 }
 
 export enum DCCEntryType {
-  Vaccination,
-  Recovery,
-  Test,
-  UKDomestic
+  Vaccination = 0,
+  Recovery = 1,
+  Test = 2,
+  UKDomestic = 3
 }
 
 export enum ValidationStepState {

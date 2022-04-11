@@ -10,7 +10,7 @@ import {
   ValidationStepState,
   ValidationType
 } from './constants';
-import { CoseSign1_Object } from './cose/CoseSign1_Object';
+import { CoseSign1_Object } from './Cose/CoseSign1_Object';
 import { IValidationContext } from './dcc-interfaces';
 
 const formatSpkiAsPem = (spki: string): string => {

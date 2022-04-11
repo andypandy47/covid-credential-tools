@@ -4,7 +4,7 @@ import jwkToPem from 'jwk-to-pem';
 const publicKeyPrefix = '-----BEGIN PUBLIC KEY-----\n';
 const publicKeyPostfix = '-----END PUBLIC KEY-----';
 
-const removeKeyHeaders = (publicKey: string) => {
+export const removeKeyHeaders = (publicKey: string) => {
   return publicKey.replace(publicKeyPrefix, '').replace(publicKeyPostfix, '');
 };
 

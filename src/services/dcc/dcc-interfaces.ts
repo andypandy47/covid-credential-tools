@@ -1,5 +1,6 @@
 import { DCCEntryType, ValidationStepState } from './constants';
 import { CoseSign1_Object } from './Cose/CoseSign1_Object';
+import { EUDCC } from './dcc-combined-schema';
 
 export interface IPersonalDetails {
   givenName: string;
@@ -17,7 +18,17 @@ export interface IDCCGenerationResponse {
   signedHcert: string;
   kid: string;
   publicKeyPem: string;
+  expectedDCCPayload: IDCC;
   dccType: DCCEntryType;
+}
+
+export interface IDCC {
+  iat: number;
+  exp: number;
+  iss: string;
+  hCert: {
+    euHcertV1Schema: EUDCC;
+  };
 }
 
 export interface ISigningDetails {

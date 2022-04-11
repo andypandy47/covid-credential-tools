@@ -1,8 +1,3 @@
-export class Styles {
-  public static readonly InputWidth = '400px';
-
-  public static readonly PageWidth = '1000px';
-}
 export class SignatureAlgortihms {
   public static readonly ES256 = 'ES256';
   public static readonly ES384 = 'ES384';

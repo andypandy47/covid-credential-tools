@@ -9,7 +9,7 @@ import x509 from 'js-x509-utils';
 import {
   supportedAlgorithms,
   x509AlgorithmsToCOSEAlgortihms
-} from '../constants';
+} from '../crypto-constants';
 import {
   EUDCC,
   RecoveryEntry,
@@ -19,12 +19,15 @@ import {
 } from './dcc-combined-schema';
 import { IKey } from '../crypto-interfaces';
 import {
+  IDCC,
   IDCCGenerationResponse,
   IPersonalDetails,
   ISecurityClaims,
   ISigningDetails
 } from './dcc-interfaces';
+
 import { DCCEntryType, DCCValues } from './constants';
+
 import icaotransliteration from 'icao-transliteration';
 
 import extractKid from 'utilities/extract-kid';
@@ -114,10 +117,10 @@ export const generateDCC = async (
     ver: '1.3.0',
     nam: {
       gn: personalDetails.givenName,
+      fn: personalDetails.foreName,
       gnt: gnTransliterated,
       fnt: fnTransliterated
     },
-    fn: personalDetails.foreName,
     dob: personalDetails.dob
   };
 
@@ -162,9 +165,19 @@ export const generateDCC = async (
 
   const prefixed = `${hcertContextIdentifier}${base45Encoded}`;
 
+  const dccForJSON: IDCC = {
+    iat: iatEpoch,
+    exp: expEpoch,
+    iss: securityClaims.issuerCountry,
+    hCert: {
+      euHcertV1Schema: dccPayload
+    }
+  };
+
   return {
     signedHcert: prefixed,
     kid: Buffer.from(kid).toString('base64'),
-    publicKeyPem
+    publicKeyPem,
+    expectedDCCPayload: dccForJSON
   } as IDCCGenerationResponse;
 };

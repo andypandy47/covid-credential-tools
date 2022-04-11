@@ -6,7 +6,7 @@ import {
   Stack
 } from '@chakra-ui/react';
 import * as React from 'react';
-import { Styles } from 'services/constants';
+import { Styles } from 'styles/style-constants';
 import { RecoveryEntry } from 'services/dcc/dcc-combined-schema';
 
 interface IRecoveryDetailsFormProps {
